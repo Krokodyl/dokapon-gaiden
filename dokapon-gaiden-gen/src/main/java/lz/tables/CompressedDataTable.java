@@ -14,6 +14,7 @@ public class CompressedDataTable {
     private int newStart;
     private int newDataStart;
     private int newDataShift;
+    private boolean skip = false;
 
     public void addRange(PointerRange r){
         ranges.add(r);
@@ -61,5 +62,13 @@ public class CompressedDataTable {
 
     public void setNewStart(int newStart) {
         this.newStart = newStart;
+    }
+
+    public boolean isSkip() {
+        return skip;
+    }
+
+    public void setSkip(boolean skip) {
+        this.skip = skip;
     }
 }

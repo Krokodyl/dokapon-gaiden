@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static enums.CharType.MODE_F0;
 import static services.Utils.bytesToHex;
@@ -261,5 +262,27 @@ public class JsonLoader {
         }
 
         return files;
+    }
+
+    public static List<NameTable> loadNames() {
+        List<NameTable> tables = new ArrayList<>();
+        JSONObject json = new JSONObject(loadJson());
+
+        JSONArray array = json.getJSONArray("names");
+        for (Object o : array) {
+            JSONObject next = (JSONObject) o;
+            NameTable table = new NameTable();
+            String offset = next.getString("offset");
+            String shift = next.getString("shift");
+            String length = next.getString("length");
+            table.setOffset(Integer.parseInt(offset,16));
+            table.setShift(Integer.parseInt(shift,16));
+            table.setLength(Integer.parseInt(length,16));
+            JSONArray values = next.getJSONArray("values");
+            String[] strings = values.toList().stream().map(Object::toString).toArray(String[]::new);
+            table.setNames(strings);
+            tables.add(table);
+        }
+        return tables;
     }
 }

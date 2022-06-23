@@ -1,9 +1,8 @@
 package services;
 
-import entities.FontColor;
-import entities.Palette;
-import entities.Palette2bpp;
-import entities.Palette4bpp;
+import characters.LatinChar;
+import characters.Letter;
+import entities.*;
 import lz.LzCompressor;
 
 import javax.imageio.ImageIO;
@@ -14,7 +13,9 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ImageReader {
@@ -48,6 +49,56 @@ public class ImageReader {
         //CompressedSpriteManager compressedSpriteManager = new CompressedSpriteManager(null);
         //compressedSpriteManager.compressCopyFile(uncomp, Header.LATIN_SPRITES_HEADER, outputFile);
         //compressedSpriteManager.decompressFile(outputFile, "src/main/resources/data/decomp-1B8000.data");
+    }
+
+    public void generateSpriteCharacterSelectScreen() throws IOException {
+        generateSpriteDataFromImage(
+                "src/main/resources/sprites/character-select.png",
+                "src/main/resources/gen/sprite-uncompressed.data",
+                new Palette4bpp("/palettes/palette-character-select.png"),
+                4
+        );
+        String uncomp = "src/main/resources/gen/sprite-uncompressed.data";
+        String outputFile = "src/main/resources/data/D63E7.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+        //CompressedSpriteManager compressedSpriteManager = new CompressedSpriteManager(null);
+        //compressedSpriteManager.compressCopyFile(uncomp, Header.LATIN_SPRITES_HEADER, outputFile);
+        //compressedSpriteManager.decompressFile(outputFile, "src/main/resources/data/decomp-1B8000.data");
+    }
+
+    public void generateCharacterSelectScreenTilesMap() throws IOException {
+        String uncomp = "src/main/resources/tiles-maps/character-select.data";
+        String outputFile = "src/main/resources/data/D399E.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+    }
+
+    public void generateSpriteInputScreen() throws IOException {
+        generateSpriteDataFromImage(
+                "src/main/resources/sprites/input-screen.png",
+                "src/main/resources/gen/sprite-uncompressed.data",
+                new Palette4bpp("/palettes/palette-input-screen.png"),
+                4
+        );
+        String uncomp = "src/main/resources/gen/sprite-uncompressed.data";
+        String outputFile = "src/main/resources/data/DC5A1.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+        //CompressedSpriteManager compressedSpriteManager = new CompressedSpriteManager(null);
+        //compressedSpriteManager.compressCopyFile(uncomp, Header.LATIN_SPRITES_HEADER, outputFile);
+        //compressedSpriteManager.decompressFile(outputFile, "src/main/resources/data/decomp-1B8000.data");
+    }
+
+    public void generateInputScreenTilesMap() throws IOException {
+        String uncomp = "src/main/resources/tiles-maps/input-screen.data";
+        String outputFile = "src/main/resources/data/D3C2C.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
     }
 
     public void generateSpriteRulesScreen() throws IOException {
@@ -160,6 +211,7 @@ public class ImageReader {
             }
             if (stop) break;
         }
+        if (file.toString().contains("w8")) width = 8 + 2;
         byte[] squelch = squelch(byteArrayOutputStream.toByteArray(), width + 2);
         //System.out.println(Utils.bytesToHex(squelch));
         return squelch;
@@ -287,6 +339,50 @@ public class ImageReader {
         return sb.toString();
     }
 
+    public int getWidth(File file, Palette palette, FontColor fontColor) {
+        try {
+            image = ImageIO.read(file);
+        } catch (IOException e) {
+
+        }
+        int width = 0;
+        boolean stop = false;
+        int tileX, tileY = 0, x, y;
+        while (tileY++<image.getHeight()/8) {
+            tileX=0;
+            while (tileX++<image.getWidth()/8) {
+                y=0;
+                while (y++<8) {
+                    x=0;
+                    int encodedLine = 0;
+                    while (x++<8) {
+                        int pixelX = (tileX - 1) * 8 + (x - 1);
+                        int rgb = image.getRGB(pixelX, ((tileY - 1) * 8 + (y - 1)));
+                        if (rgb==0) {
+                            stop = true;
+                            break;
+                        }
+                        String color = Utils.getColorAsHex(rgb).toLowerCase();
+                        FontColor pixelColor = palette.getFontColor(color);
+                        int mask = pixelColor.getMask();
+                        mask = mask >> (x-1);
+                        encodedLine = encodedLine | mask;
+                        if (fontColor==pixelColor) {
+                            if (width< pixelX) {
+                                width = pixelX;
+                            }
+                        }
+                    }
+                    if (stop) break;
+                }
+                if (stop) break;
+            }
+            if (stop) break;
+        }
+        if (file.toString().contains("w8")) width = 8 + 2;
+        return width + 2;
+    }
+
     public static void main(String[] args) {
         
         String s = "*!?:.+-()[]\\/_#$%0123456789~";
@@ -347,6 +443,24 @@ public class ImageReader {
                     file -> {
                         if (file.toFile().isFile()) {
                             try {
+                                System.out.printf("Writing Latin char %s at %s\n",file.toFile().getName(),Integer.toHexString(offset[0]));
+                                byte[] bytes = loadFontImage2bppSquelched(file.toFile(), new Palette2bpp("/palettes/palette-font.png"), FontColor.MAP_2BPP_COLOR_02);
+                                for (byte b:bytes) {
+                                    data[offset[0]++] = b;
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            );
+            offset[0] = Integer.parseInt("58C00",16);
+            path = Paths.get(ClassLoader.getSystemResource("images/syllable").toURI());
+            Files.list(path).sorted().forEach(
+                    file -> {
+                        if (file.toFile().isFile()) {
+                            try {
+                                System.out.printf("Writing Latin char %s at %s\n",file.toFile().getName(),Integer.toHexString(offset[0]));
                                 byte[] bytes = loadFontImage2bppSquelched(file.toFile(), new Palette2bpp("/palettes/palette-font.png"), FontColor.MAP_2BPP_COLOR_02);
                                 for (byte b:bytes) {
                                     data[offset[0]++] = b;
@@ -362,5 +476,156 @@ public class ImageReader {
         }
         //imageReader.loadFontImage2bppSquelched("src/main/resources/images/latin/char-000.png", new Palette2bpp("/palettes/palette-latin.png"), FontColor.MAP_2BPP_COLOR_02);
 
+    }
+    
+    public Map<String, List<Letter>> generateSyllables(List<NameTable> tables, LatinLoader latinLoader) {
+        Map<String, List<Letter>> mapWords = new HashMap<>();
+        int code = Integer.parseInt("0B00",16);
+        Map<String, Letter> letterMap = new HashMap<>();
+        String name = "char-%s.png";
+        try {
+            for (int k = 0; k < 26; k++) {
+                char value = (char) ('A' + k);
+                String filename = String.format(name, Utils.padLeft("" + k, '0', 3));
+                Letter l = new Letter(value, filename);
+                Path path = Paths.get(ClassLoader.getSystemResource("images/latin/" + filename).toURI());
+                int width = getWidth(path.toFile(), new Palette2bpp("/palettes/palette-font.png"), FontColor.MAP_2BPP_COLOR_02);
+                l.setWidth(width);
+                l.setCode(Utils.toHexString(code,4));
+
+                letterMap.put(l.getValue(), l);
+                int m = k + 26;
+                value = (char) ('a' + k);
+                filename = String.format(name, Utils.padLeft("" + m, '0', 3));
+                l = new Letter(value, filename);
+                path = Paths.get(ClassLoader.getSystemResource("images/latin/" + filename).toURI());
+                width = getWidth(path.toFile(), new Palette2bpp("/palettes/palette-font.png"), FontColor.MAP_2BPP_COLOR_02);
+                l.setCode(Utils.toHexString(code+Integer.parseInt("1A00",16),4));
+                l.setWidth(width);
+                letterMap.put(l.getValue(), l);
+                code += Integer.parseInt("100",16);
+            }
+            char value = ' ';
+            String filename = "char-150-w2.png";
+            Letter l = new Letter(value, filename);
+            int width = 2;
+            l.setCode("0A00");
+            l.setWidth(width);
+            letterMap.put(l.getValue(), l);
+        } catch (IOException | URISyntaxException e) {
+            
+        }
+        for (Map.Entry<String, Letter> entry : letterMap.entrySet()) {
+            System.out.println(entry);
+        }
+        List<Letter> syllables = new ArrayList<>();
+        int width = 0;
+        code = Integer.parseInt("6000",16);
+        for (NameTable table:tables)
+        for (String word:table.getNames()) {
+            mapWords.put(word, new ArrayList<Letter>());
+            String syllable = "";
+            width = 0;
+            for (char c:word.toCharArray()) {
+                Letter letter = letterMap.get(""+c);
+                if (letter!=null){
+                    if (letter.getWidth() + width < 16) {
+                        syllable += letter.getValue();
+                        width += letter.getWidth();
+                    } else {
+                        Letter newSyllable = new Letter(syllable);
+                        if (syllable.length()>1) {
+                            newSyllable.setWidth(width);
+                            newSyllable.setCode(Utils.toHexString(code, 4));
+                            if (!syllables.contains(newSyllable)) {
+                                syllables.add(newSyllable);
+                                code += Integer.parseInt("100", 16);
+                            } else {
+                                for (Letter s : syllables) {
+                                    if (s.equals(newSyllable)) newSyllable = s;
+                                }
+                            }
+                        } else {
+                            for (LatinChar latinChar : latinLoader.getLatinChars()) {
+                                if (latinChar.getValue().equals(syllable)) {
+                                    newSyllable = new Letter(syllable);
+                                    newSyllable.setCode(latinChar.getCode());
+                                }
+                            }
+                        }
+                        mapWords.get(word).add(newSyllable);
+                        width = letter.getWidth();
+                        syllable = letter.getValue();
+                    }
+                }
+            }
+            if (!syllable.isEmpty()) {
+                Letter newSyllable = new Letter(syllable);
+                if (syllable.length()>1) {
+                    newSyllable.setWidth(width);
+                    newSyllable.setCode(Utils.toHexString(code, 4));
+                    if (!syllables.contains(newSyllable)) {
+                        syllables.add(newSyllable);
+                        code += Integer.parseInt("100", 16);
+                    } else {
+                        for (Letter s : syllables) {
+                            if (s.equals(newSyllable)) newSyllable = s;
+                        }
+                    }
+                } else {
+                    for (LatinChar latinChar : latinLoader.getLatinChars()) {
+                        if (latinChar.getValue().equals(syllable)) {
+                            newSyllable = new Letter(syllable);
+                            newSyllable.setCode(latinChar.getCode());
+                        }
+                    }
+                }
+                mapWords.get(word).add(newSyllable);
+            }
+        }
+        int n = 200;
+        for (Letter syllable : syllables) {
+            if (syllable.getValue().length()>1){
+                BufferedImage out = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g = (Graphics2D) out.getGraphics();
+                g.setColor(Color.BLACK);
+                g.fillRect(0,0,16,16);
+
+                int x = 0;
+                for (char c : syllable.getValue().toCharArray()) {
+                    try {
+                        Letter letter = letterMap.get("" + c);
+                        Path path = null;
+                        path = Paths.get(ClassLoader.getSystemResource("images/latin/" + letter.getFilename()).toURI());
+                        BufferedImage image = ImageIO.read(path.toFile());
+                        BufferedImage subImage = getSubImage(image, letter.getWidth());
+                        g.drawImage(subImage, x, 0, null);
+                        x += letter.getWidth();
+                    } catch (URISyntaxException | IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+                try {
+                    String folder = "D:\\git\\dokapon-gaiden\\dokapon-gaiden-gen\\src\\main\\resources\\images\\syllable";
+                    ImageIO.write(out, "png", new File(folder + "/" + n + ".png"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                String json = "{\n" +
+                        "      \"value\":\"{SYL-%s}\",\n" +
+                        "      \"code\":\"%s\"\n" +
+                        "    },\n";
+                System.out.printf(json, syllable.getValue(), syllable.getCode());
+                n++;
+            }
+        }
+        return mapWords;
+    }
+    
+    public BufferedImage getSubImage(BufferedImage image, int width) {
+        return image.getSubimage(0,0,width,image.getWidth());
     }
 }

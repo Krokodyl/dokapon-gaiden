@@ -655,6 +655,19 @@ public class DataReader {
             } else {
                 String[] d = p.getData();
                 String[] squelch = Utils.squelch(d);
+                /*List<String> list = new ArrayList<>();
+                boolean skip = false;
+                for (String s:squelch) {
+                    if (!skip && !s.equals("0380")) {
+                        list.add(s);
+                    }
+                    if (s.equals("0380")) {
+                        skip = true;
+                    } else {
+                        skip = false;
+                    }
+                }
+                newP.setData(list.toArray(new String[0]));*/
                 newP.setData(squelch);
             }
             if (menuData != null) {
@@ -854,5 +867,23 @@ public class DataReader {
             compressedDataTable.addNewPointer(newPointer);
             System.out.println("New "+newPointer);
         }
+    }
+    
+    public static List<String> readSyllablesWords(String name){
+        List<String> words = new ArrayList<>();
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader(
+                        Objects.requireNonNull(Translator.class.getClassLoader().getResourceAsStream(name)), StandardCharsets.UTF_8));
+        String line = null;
+        try {
+            line = br.readLine();
+            while (line != null) {
+                words.add(line.trim());
+                line = br.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return words;
     }
 }

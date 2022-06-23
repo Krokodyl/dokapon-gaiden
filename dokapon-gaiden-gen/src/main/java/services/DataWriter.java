@@ -1,14 +1,19 @@
 package services;
 
+import characters.Letter;
 import entities.CodePatch;
+import entities.NameTable;
 import entities.PointerData;
 import entities.PointerTable;
 import lz.tables.CompressedDataPointer;
 import lz.tables.CompressedDataTable;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +22,7 @@ public class DataWriter {
     public static void saveData(String romOutput, byte[] data) {
         FileOutputStream stream = null;
         try {
-            stream = new FileOutputStream(new File(romOutput));
+            stream = new FileOutputStream(romOutput);
             stream.write(data);
             stream.close();
         } catch (IOException ex) {
@@ -134,7 +139,9 @@ public class DataWriter {
                     data[offsetMenuData+(menuByte++)] = (byte) a;
                 }
             }
+            System.out.println("Pointer : "+p);
         }
+        System.out.println("Last pointer : "+table.getDataEng().get(table.getDataEng().size()-1));
         return data;
     }
 
@@ -154,5 +161,26 @@ public class DataWriter {
             }
         }
         return data;
+    }
+
+    public static void writeNames(List<NameTable> names, Map<String, List<Letter>> syllables, byte[] data) {
+        for (NameTable table:names) {
+            int offset = table.getOffset();
+            int shift = table.getShift();
+            int length = table.getLength();
+            for (String name:table.getNames()) {
+                int count = 0;
+                for (Letter letter : syllables.get(name)) {
+                    byte[] codeBytes = letter.getCodeBytes();
+                    for (byte b:codeBytes) {
+                        data[offset+(count++)]=b;
+                    }
+                }
+                while (count<length*2) {
+                    data[offset+(count++)]=0;
+                }
+                offset+=shift;
+            }
+        }
     }
 }

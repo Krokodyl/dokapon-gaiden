@@ -1,6 +1,7 @@
 package services;
 
 import characters.JapaneseChar;
+import characters.Letter;
 import entities.*;
 import lz.LzDecompressor;
 import lz.tables.CompressedDataTable;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,9 +32,9 @@ public class DokaponGaiden {
         }
 
         LzDecompressor decompressor = new LzDecompressor();
-        decompressor.decompressData(data, "2b2d2");
+        decompressor.decompressData(data, "d399e");
         decompressor.printStats();
-        //DataWriter.saveData("src/main/resources/tiles-maps/2b2d2.data", decompressor.getDecompressedData());
+        DataWriter.saveData("src/main/resources/gen/d399e.data", decompressor.getDecompressedData());
         //Decompressor decompressor = new Decompressor(data, "28014");
         //decompressor.decompressData();
         //decompressor.printOutput();
@@ -42,10 +44,17 @@ public class DokaponGaiden {
         Translator translator = new Translator(latinLoader);
 
         ImageReader imageReader = new ImageReader();
+        List<NameTable> names = JsonLoader.loadNames();
+        Map<String, List<Letter>> syllables = imageReader.generateSyllables(names, latinLoader);
+        DataWriter.writeNames(names, syllables, data);
         imageReader.writeLatin(data);
         
         imageReader.generateSpriteRulesScreen();
         imageReader.generateRulesScreenTilesMap();
+        imageReader.generateSpriteInputScreen();
+        imageReader.generateInputScreenTilesMap();
+        imageReader.generateSpriteCharacterSelectScreen();
+        imageReader.generateCharacterSelectScreenTilesMap();
         
         //imageReader.generateSpriteTitleScreen();
         //imageReader.generateTitleScreenTilesMap();
@@ -94,13 +103,13 @@ public class DokaponGaiden {
 
         for (PointerTable table:tables) {
             System.out.println(String.format("---------------- Table %s ---------------------",table.getId()));
-            new TablePrinter().generateTranslationFile2(table, data, japanese, "src/main/resources/gen/Table "+table.getId()+".txt");
+            //new TablePrinter().generateTranslationFile2(table, data, japanese, "src/main/resources/gen/Table "+table.getId()+".txt");
             System.out.println("--------------------------------------");
         }
 
         for (PointerTable table:subTables) {
             System.out.println(String.format("---------------- Table %s ---------------------",table.getId()));
-            new TablePrinter().generateTranslationFile2(table, data, japanese, "src/main/resources/gen/SubTable "+table.getId()+".txt");
+            //new TablePrinter().generateTranslationFile2(table, data, japanese, "src/main/resources/gen/SubTable "+table.getId()+".txt");
             System.out.println("--------------------------------------");
         }
 

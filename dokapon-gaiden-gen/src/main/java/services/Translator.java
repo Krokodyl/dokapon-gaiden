@@ -46,6 +46,8 @@ public class Translator {
         String line = br.readLine();
         Translation t = new Translation();
         String jpn = "";
+        int translationCount = 0;
+        int missingTranslations = 0;
         while (line != null) {
             if (line.contains(Constants.TRANSLATION_KEY_VALUE_SEPARATOR)) {
                 String[] split = line.split(Constants.TRANSLATION_KEY_VALUE_SEPARATOR);
@@ -75,24 +77,19 @@ public class Translator {
                 }
             } else {
                 if (t.getTranslation() != null && !t.getTranslation().trim().isEmpty()) {
-                    if (!name.contains("Table 7") && name.contains("Table 6")) {
-                        /*if (t.getTranslation().length()>=40 && t.getTranslation().length()<=48) {
-                            System.out.println("pb:"+t.getTranslation());
-                            //t.setTranslation("Z{EL}");
-                        }*/
-                        /*System.out.println(t.getOffset());
-                        System.out.println(t.getValue().length());*/
-                    }
-
                     translations.add(t);
+                    translationCount++;
                 }
                 else {
+                    missingTranslations++;
                     //System.out.println("MISSING TRANSLATIONS : "+Integer.toHexString(t.getOffset())+"  "+jpn);
                 }
                 t = new Translation();
             }
             line = br.readLine();
         }
+        System.out.printf("Translations : %s\n",translationCount);
+        System.out.printf("Missing translations : %s\n",missingTranslations);
     }
 
     public void loadReferenceFile(String name) throws IOException {
@@ -131,6 +128,10 @@ public class Translator {
                 return eng.split(" ");
             }
         }
+        /*
+        
+         */
+        
         /*
         Missing translation
          */

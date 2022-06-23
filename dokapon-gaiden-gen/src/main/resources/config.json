@@ -13,12 +13,26 @@
       "pointers": [
         {
           "start": "38000",
-          "end": "386BF",
+          "end": "3849F",
           "shift": "30000"
         }
       ],
       "new-data-start": "120000",
       "new-data-shift": "120000",
+      "desc": "",
+      "skip": false
+    },
+    {
+      "id": 2,
+      "pointers": [
+        {
+          "start": "38500",
+          "end": "386BF",
+          "shift": "30000"
+        }
+      ],
+      "new-data-start": "128001",
+      "new-data-shift": "128000",
       "desc": "",
       "skip": false
     }
@@ -35,6 +49,42 @@
       "new-start": "130000",
       "new-data-start": "130014",
       "new-data-shift": "130000"
+    },
+    {
+      "pointers": [
+        {
+          "start": "C0000",
+          "end": "C0067",
+          "shift": "C0000"
+        }
+      ],
+      "new-start": "138000",
+      "new-data-start": "138068",
+      "new-data-shift": "138000"
+    },
+    {
+      "pointers": [
+        {
+          "start": "D0000",
+          "end": "D004A",
+          "shift": "D0000"
+        }
+      ],
+      "new-start": "140000",
+      "new-data-start": "140068",
+      "new-data-shift": "140000"
+    },
+    {
+      "pointers": [
+        {
+          "start": "D8000",
+          "end": "D8021",
+          "shift": "D8000"
+        }
+      ],
+      "new-start": "148000",
+      "new-data-start": "148022",
+      "new-data-shift": "148000"
     }
   ],
   "translations-files": [
@@ -54,7 +104,68 @@
     "references/11 - churches.txt",
     "references/12 - players.txt"
   ],
+  "names": [
+    {
+      "offset": "54392",
+      "shift": "13",
+      "length": "4",
+      "values": [
+        "Takeru",
+        "Sally",
+        "Palette",
+        "Jack",
+        "Tiki",
+        "Flavono",
+        "Bonmel",
+        "Tomitori",
+        "Lloyd",
+        "Sayaka"
+      ]
+    }
+  ],
   "code-patches": [
+    {
+      "code": "22 00 80 20",
+      "original": "BF 00 00 07",
+      "offset": "10033",
+      "desc": "Changes text loading bank",
+      "feature": "TEXT-LOADING"
+    },
+    {
+      "code": "22 00 80 20",
+      "original": "BF 00 00 07",
+      "offset": "10B08",
+      "desc": "Changes text loading bank",
+      "feature": "TEXT-LOADING"
+    },
+    {
+      "code": "22 50 80 20",
+      "original": "BF 02 00 07",
+      "offset": "106B0",
+      "desc": "Changes text loading bank",
+      "feature": "TEXT-LOADING"
+    },
+    {
+      "code": "02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+      "offset": "58140",
+      "desc": "New space character",
+      "feature": "TEXT-LOADING"
+    },
+    {
+      "code": "8A 29 01 00 C9 01 00 D0 05 BF 00 00 25 6B BF 00 00 24 6B",
+      "offset": "100000",
+      "desc": "Loads texts in bank 24/25 according to evenness",
+      "feature": "TEXT-LOADING"
+    },
+    {
+      "code": "8A 29 01 00 C9 01 00 D0 05 BF 02 00 25 6B BF 02 00 24 6B",
+      "offset": "100050",
+      "desc": "Loads texts in bank 24/25 according to evenness",
+      "feature": "TEXT-LOADING"
+    },
+    
+    
+    
     {
       "code": "A9 22",
       "offset": "2B82",
@@ -92,26 +203,6 @@
       "desc": "Tiles Map",
       "feature": "TITLE-SCREEN",
       "file": true
-    },
-    {
-      "code": "BF 00 00 24",
-      "original": "BF 00 00 07",
-      "offset": "10033",
-      "desc": "Changes text loading bank",
-      "feature": "TEXT-LOADING"
-    },
-    {
-      "code": "BF 00 00 24",
-      "original": "BF 00 00 07",
-      "offset": "10B08",
-      "desc": "Changes text loading bank",
-      "feature": "TEXT-LOADING"
-    },
-    {
-      "code": "02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
-      "offset": "58140",
-      "desc": "New space character",
-      "feature": "TEXT-LOADING"
     },
 
     {
@@ -155,6 +246,101 @@
       "offset": "330E",
       "desc": "Loading tiles maps",
       "feature": "RULES"
+    },
+    {
+      "code": "27 00",
+      "original": "18 00",
+      "offset": "65AB",
+      "desc": "",
+      "feature": "CHARACTER PAGE"
+    },
+    {
+      "code": "A9 29",
+      "original": "A9 1B",
+      "offset": "25F1",
+      "desc": "Loading Input Page Tiles",
+      "feature": "CHARACTER PAGE"
+    },
+    {
+      "code": "A9 28",
+      "original": "A9 1A",
+      "offset": "2C59",
+      "desc": "Loading Input Page Tiles Map",
+      "feature": "CHARACTER PAGE"
+    },
+    {
+      "code": "A9 28",
+      "original": "A9 1A",
+      "offset": "25CC",
+      "desc": "Loading Tiles",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "A9 28",
+      "original": "A9 1A",
+      "offset": "2C01",
+      "desc": "Loading Tile Map",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "48 21 49 21 4a 21 4b 21 4c 21 4d 21 4e 21 00 20 00 20 00 20 00 20 00 20 58 21 59 21 5a 21 5b 21 5c 21 5d 21 5e 21 00 20 00 20 00 20 00 20 00 20",
+      "offset": "23CB8",
+      "desc": "Joypad-1",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "48 21 49 21 4a 21 4b 21 4c 21 4d 21 4f 21 00 20 00 20 00 20 00 20 00 20 58 21 59 21 5a 21 5b 21 5c 21 5d 21 5f 21 00 20 00 20 00 20 00 20 00 20",
+      "offset": "23CE8",
+      "desc": "Joypad-2",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "20 21 21 21 22 21 23 21 24 21 25 21 26 21 00 20 00 20 00 20 00 20 00 20 30 21 31 21 32 21 33 21 34 21 35 21 36 21 00 20 00 20 00 20 00 20 00 20",
+      "offset": "23DA8",
+      "desc": "Computer",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "e3 20 e4 20 f3 20 f4 20",
+      "offset": "23C98",
+      "desc": "Page.1",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "60 21 61 21 0b 21 70 21 71 21 1b 21 62 21 63 21 0b 21 72 21 73 21 1b 21 64 21 65 21 0b 21 74 21 75 21 1b 21",
+      "offset": "23BF0",
+      "desc": "Types (hit, fire, ice)",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "84 21 85 21 90 21 91 21 80 21 81 21 90 21 91 21 82 21 83 21 90 21 91 21",
+      "offset": "2418F",
+      "desc": "Jewel types",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "84 21 85 21 93 21 94 21 80 21 81 21 93 21 94 21 82 21 83 21 93 21 94 21",
+      "offset": "241A7",
+      "desc": "Swords types",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "84 21 85 21 86 21 87 21 80 21 81 21 86 21 87 21 82 21 83 21 86 21 87 21",
+      "offset": "241BF",
+      "desc": "Shields types",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "84 21 85 21 96 21 97 21 80 21 81 21 96 21 97 21 82 21 83 21 96 21 97 21",
+      "offset": "241D7",
+      "desc": "Armors types",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "01 20 02 20 03 20 04 20 05 20 06 20 00 20 00 20 00 20 11 20 12 20 13 20 14 20 15 20 16 20 00 20 00 20 00 20 07 20 08 20 09 20 0a 20 0b 20 0c 20 0d 20 00 20 00 20 17 20 18 20 19 20 1a 20 1b 20 1c 20 1d 20 00 20 00 20 80 20 81 20 82 20 83 20 84 20 85 20 86 20 87 20 00 20 90 20 91 20 92 20 93 20 94 20 95 20 96 20 97 20 00 20 20 20 21 20 22 20 23 20 24 20 25 20 00 20 00 20 00 20 30 20 31 20 32 20 33 20 34 20 35 20 00 20 00 20 00 20 26 20 27 20 28 20 29 20 00 20 00 20 00 20 00 20 00 20 36 30 37 30 38 30 39 30 00 20 00 20 00 20 00 20 00 20 67 20 68 20 69 20 6a 20 6b 20 6c 20 6d 20 6e 20 6f 20 77 20 78 20 79 20 7a 20 7b 20 7c 20 7d 20 7e 20 7f 20 40 20 41 20 42 20 43 20 44 20 45 20 46 20 47 20 00 20 50 20 51 20 52 20 53 20 54 20 55 20 56 20 57 20 00 20 2a 20 2b 20 2c 20 2d 20 00 20 00 20 00 20 00 20 00 20 3a 20 3b 20 3c 20 3d 20 00 20 00 20 00 20 00 20 00 20 48 20 49 20 4a 20 4b 20 4c 20 4d 20 4e 20 00 20 00 20 58 20 59 20 5a 20 5b 20 5c 20 5d 20 5e 20 00 20 00 20 60 20 61 20 62 20 63 20 64 20 65 20 66 20 00 20 00 20 70 20 71 20 72 20 73 20 74 20 75 20 76 20 00 20 00 20",
+      "offset": "23DD8",
+      "desc": "Classes",
+      "feature": "CHARACTER SELECT"
     }
   ],
   "input-patches": [
@@ -531,8 +717,28 @@
       "code":"5a00"
     },
     {
-      "value":"~",
+      "value":",",
       "code":"5b00"
+    },
+    {
+      "value":"~",
+      "code":"5c00"
+    },
+    {
+      "value":"・",
+      "code":"5d00"
+    },
+    {
+      "value":"☠",
+      "code":"FA01"
+    },
+    {
+      "value":"↓",
+      "code":"FB01"
+    },
+    {
+      "value":"↑",
+      "code":"FC01"
     }
   ],
   "japanese": [
@@ -1557,7 +1763,7 @@
       "code":"FC00"
     },
     {
-      "value":"鍵",
+      "value":"撃",
       "code":"FD00"
     },
     {
