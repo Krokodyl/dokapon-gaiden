@@ -8,9 +8,14 @@ The 3rd game in the Dokapon series.
 
 外伝 (gaiden) means 'Side Story'. It's often used in fiction for work that references previous one while not being a direct sequel.
 
+## Game
+
+4 players (Human or CPUs) take turns going around a board. The goal is to have the most gold at the end.<br/>You get gold from different sources: random events, fighting monsters, fighting other players (you take half of the gold of defeated opponents) or simply completing a lap around the board.<br/>
+While keeping gold is important as it is your final score, it can be used during the game to upgrade your gear and your stats to help you fight better.<br/>
+
 ## Patch file
 
-Patch file v1.0 is available here : [todo.zip](/patch/Kessen!%20Dokapon%20Oukoku%20IV%20-%20English%20v1.0.zip)
+Patch file v1.0 is available here : [Dokapon Gaiden - Honoo no Audition (English).zip](/patch/Dokapon%20Gaiden%20-%20Honoo%20no%20Audition%20(English).zip)
 
 It applies to the following ROM :<br/>
 File: Dokapon Gaiden - Honoo no Audition (Japan)<br/>
