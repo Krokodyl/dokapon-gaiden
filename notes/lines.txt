@@ -1,0 +1,47 @@
+Roulette 	1		234		5		6
+
+Warrior		CEFE	D0F6	D30C	D4D8
+Fire
+Ice
+Gambler
+Witch
+Sailor
+Commander							D5EC	
+Chef		D04A	D24C	D420	D614
+Morti								D64A
+Priest								D68A
+
+			Training	T2		T3		HP		Lap		Bounty	Deny Devil
+Warrior		D6EA								E0B2	DF18	DD42
+Fire
+Ice
+Gambler
+Witch
+Sailor
+Commander								E39E			DFE0
+Chef											E1F8
+Morti					DA52			E408
+Priest		D872				DCD0
+
+			Slipped		Tornado		Lightning	Meteor
+Warrior
+Fire
+Ice
+Gambler
+Witch
+Sailor
+Commander
+Chef	
+Morti	
+Priest		CAA0		CEB6		CC8A		C91A
+
+
+Puns
+91C8 92B9	
+91DE 92D7
+
+ダジャレをいうのは ダレじゃ!
+ダジャレを言うのは ダレじゃ!
+
+フトンが ふっとんだ
+布団が吹っ飛んだ

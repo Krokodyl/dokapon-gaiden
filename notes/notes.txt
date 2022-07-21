@@ -1,0 +1,663 @@
+############################ TEXT LOADING #################
+0180		Pause
+0180 F000	Pause 4s
+0180 8000	Pause 2s
+0180 4000	Pause 1s
+
+0380		Load other pointer
+
+0780		Clear text area
+0880		New line
+0080 		End line
+
+0002		下
+0102		示
+0202		半
+0302		分
+0402		以		
+0502		二
+0602		村
+0702		俊
+0802		川
+0902		司
+0a02		岡
+0b02		本
+0c02		博
+0d02		梶
+0e02		井
+0f02		健
+1002		越
+1102		千
+1202		夏
+
+棍 小川真司
+6川司岡本博棍 小川真司
+司
+二村俊行		
+
+CODE	PARAM	USE
+0180	2		Pause
+0280	2		Pointer
+0380	2		Pointer		
+0480	0		End of pointer data
+0780	0		Clear text
+0880	0		New line
+0980	2
+0A80	0
+0B80	2
+0C80	3
+0D80	3
+0E80	0
+0F80	0
+1080	3
+1180	2
+1280	2
+1380	0
+1480	2
+1B80	0		Variable
+1D80	1
+1E80	1
+1F80	1
+
+############################ TEXT LOADING #################
+
+Loading characters:
+x10033 ($02/8033)		BF 00 00 07
+x106A6 ($02/86A6)		BF 00 00 07
+x10B08 ($02/8B08)		BF 00 00 07
+
+Loading pointers:
+$01/E1DB BF 00 80 07 LDA $078000,x[$07:85C0] A:FFFF X:05C0 Y:0000 P:envmxdizc
+$01/E1DF 99 A0 0C    STA $0CA0,y[$00:0CA0]   A:E952 X:05C0 Y:0000 P:eNvmxdizc
+
+Jump to x100000
+22 00 80 20		
+
+8A 29 01 00 C9 01 00 D0 05 BF 00 00 25 6B BF 00 00 24 6B
+
+8A				TXA
+29 01 00		AND #$0001
+C9 01 00    	CMP #$0001
+D0 05       	BNE $05
+BF 00 00 25
+6B
+BF 00 00 24
+6B
+
+
+$02/86B0 BF 02 00 07 LDA $070002,x[$07:8F0E] A:86B0 X:8F0C Y:0000 P:envmxdizc
+$02/86B4 85 2C       STA $2C    [$00:122C]   A:01D4 X:8F0C Y:0000 P:envmxdizc
+
+Jump to x100050
+22 50 80 20		
+
+8A 29 01 00 C9 01 00 D0 05 BF 02 00 25 6B BF 02 00 24 6B
+
+x106B0
+
+
+xD003A		E7 63
+$1A:803A
+
+
+
+xD63E7	01 00 FC 00 0D 00 00 A5 00 55 00 01 00 FB 00 A9 00
+
+$00/9AEC B7 BC       LDA [$BC],y[$1A:E3E7]   A:E3E7 X:0000 Y:0000 D:0000 DB:02 S:1DAF P:envMxdiZc HC:0092 VC:255 FC:20 I:00
+
+
+
+
+############################
+
+$02/80B7 BF 02 00 07 LDA $070002,x[$07:E954] A:80B7 X:E952 Y:0000 P:envmxdizc
+$02/80BB 99 A0 0C    STA $0CA0,y[$02:0CA0]   A:9F4A X:E952 Y:0000 P:eNvmxdizc
+...
+$02/8033 BF 00 00 07 LDA $070000,x[$07:9F4A] A:E956 X:9F4A Y:0000 P:eNvmxdizc
+$02/8037 30 03       BMI $03    [$803C]      A:0044 X:9F4A Y:0000 P:envmxdizc
+
+text		x39F4A
+pointer		
+
+07E954	x3E954		4A 9F
+
+020CA0	x385C0		52 E9
+
+x3E952		03 80 4A 9F 9D 00 C8 00 9D 00 3D 00 00 00 8D 01 8E 01 51 00 08 80 26 00 34 00 30 00 43 00 C7 00 31 00 0A 80 00 80
+
+
+{0380}{B0D4}
+
+############################ TABLES ############################
+
+x30000		21 88
+
+8D 01 8E 01		説明
+9300 8100 		マス
+
+
+OFFSET=0385C0
+VALUE=E952
+OFFSETDATA=03E952
+DATA=03 80 4A 9F 9D 00 C8 00 9D 00 3D 00 00 00 8D 01 8E 01 51 00 08 80 26 00 34 00 30 00 43 00 C7 00 31 00 0A 80 00 80 
+JPN={0380}{4A9F}ルールの 説明を{NL}いたしま~す{0A80}{EL}
+
+OFFSET=03E954
+VALUE=9F4A
+OFFSETDATA=039F4A
+DATA=44 00 39 00 2F 00 C7 00 52 00 C5 00 08 80 04 80 
+JPN=みなさ~ん!{NL}{0480}
+
+########## COMPRESSION ALGORITHM ##########
+
+xD63E7	01 00 FC 00 0D 00 00 A5 00 55 00 01 00 FB 00 A9 00
+
+FLAG BYTE / LEFT BIT  0=COPY 1=REPEAT
+
+0D = COPY THE NEXT 13 BYTES
+FC 00 = REPEAT 
+
+FC 00 = 11111100 00000000
+	          -----------
+		 -----           
+		-
+		
+		10000000
+		0
+		
+39 = 1 + 32 + 3
+
+
+11011000
+
+abcdaaabbbbacbbac
+
+aaaaaaa
+abbbbbb
+
+########## TITLE MENU ##########
+
+$00/9ADD B7 BC       LDA [$BC],y[$11:8014]   A:0014 X:93D6 Y:0014 D:0000 DB:02 S:1DB1 P:envmxdizc HC:1040 VC:254 FC:24 I:00
+$00/9ADF 18          CLC                     A:51E0 X:93D6 Y:0014 D:0000 DB:02 S:1DB1 P:envmxdizc HC:1104 VC:254 FC:24 I:00
+
+x88014		E0 51
+
+$00/9AEC B7 BC       LDA [$BC],y[$11:D1E0]   A:D1E0 X:0000 Y:0000 D:0000 DB:02 S:1DB1 P:envMxdiZc HC:1324 VC:254 FC:24 I:00
+$00/9AEE D0 03       BNE $03    [$9AF3]      A:D101 X:0000 Y:0000 D:0000 DB:02 S:1DB1 P:envMxdizc HC:0016 VC:255 FC:24 I:00
+
+x8D1E0	$11:D1E0	11*8000+51E0
+
+x110000		22:8000
+
+1A:B86F
+05:B71E
+
+$00/9ADD B7 BC       LDA [$BC],y[$05:800E]   A:000E X:93D6 Y:000E D:0000 DB:02 S:1DB1 P:envmxdizc HC:0754 VC:085 FC:02 I:00
+$00/9ADF 18          CLC                     A:371E X:93D6 Y:000E D:0000 DB:02 S:1DB1 P:envmxdizc HC:0818 VC:085 FC:02 I:00
+
+$00/9ADD B7 BC       LDA [$BC],y[$1A:8026]   A:0026 X:93D6 Y:0026 D:0000 DB:02 S:1DB1 P:envmxdizc HC:0772 VC:210 FC:59 I:00
+$00/9ADF 18          CLC                     A:386F X:93D6 Y:0026 D:0000 DB:02 S:1DB1 P:envmxdizc HC:0836 VC:210 FC:59 I:00
+
+########## RULES ###########
+First text : みなさん
+
+x39F4A		44 00 39 00 2F 00 C7 00 52 00 C5 00 08 80 04 80
+
+Second line : 9D 00 C8 00 9D 00 3D 00 00 00 8D 01 8E 01 51 00 08 80 26 00 34 00
+x3E956
+
+$02/8030 BE A0 0C    LDX $0CA0,y[$02:0CA0]   A:E956 X:E956 Y:0000 D:1200 DB:02 S:1D7F P:envmxdiZc HC:0060 VC:260 FC:16 I:00
+$02/8033 BF 00 00 07 LDA $070000,x[$07:9F4A] A:E956 X:9F4A Y:0000 D:1200 DB:02 S:1D7F P:eNvmxdizc HC:0114 VC:260 FC:16 I:00
+$02/8037 30 03       BMI $03    [$803C]      A:2626 X:9F4A Y:0000 D:1200 DB:02 S:1D7F P:envmxdizc HC:0170 VC:260 FC:16 I:00
+
+$02/80B7 BF 02 00 07 LDA $070002,x[$07:E954] A:80B7 X:E952 Y:0000 D:1200 DB:02 S:1D7F P:envmxdizc HC:1066 VC:259 FC:05 I:00
+$02/80B7 BF 02 00 07 LDA $070002,x[$07:E992] A:80B7 X:E990 Y:0000 D:1200 DB:02 S:1D7F P:envmxdizc HC:1360 VC:253 FC:56 I:00
+$02/80B7 BF 02 00 07 LDA $070002,x[$07:E9C8] A:80B7 X:E9C6 Y:0000 D:1200 DB:02 S:1D7F P:envmxdizc HC:0504 VC:250 FC:11 I:00
+$02/80B7 BF 02 00 07 LDA $070002,x[$07:EA00] A:80B7 X:E9FE Y:0000 D:1200 DB:02 S:1D7F P:envmxdizc HC:0532 VC:250 FC:06 I:00
+$02/80B7 BF 02 00 07 LDA $070002,x[$07:EA20] A:80B7 X:EA1E Y:0000 D:1200 DB:02 S:1D7F P:envmxdizc HC:0762 VC:260 FC:49 I:00
+$02/80B7 BF 02 00 07 LDA $070002,x[$07:EA72] A:80B7 X:EA70 Y:0000 D:1200 DB:02 S:1D7F P:envmxdizc HC:0826 VC:260 FC:59 I:00
+
+
+$01/E1DB BF 00 80 07 LDA $078000,x[$07:8434] A:FFFF X:0434 Y:0000 P:envmxdizc
+$01/E1DF 99 A0 0C    STA $0CA0,y[$00:0CA0]   A:A900 X:0434 Y:0000 P:eNvmxdizc
+
+$02/8033 BF 00 00 07 LDA $070000,x[$07:A900] A:0000 X:A900 Y:0000 P:eNvmxdizC
+
+x38434	00 A9
+x3A900	07 80 0A 80 00 80
+
+x120010	07 80 0A 80 00 80
+
+########## VARIABLE WIDTH CHARACTERS ###########
+
+Letter A (0B00)
+
+$02/8C08 A5 08       LDA $08    [$00:1208]   A:0001 X:E03C Y:0000 P:envmxdizC
+$02/8C0A 0A          ASL A                   A:000B X:E03C Y:0000 P:envmxdizC
+
+$02/8C19 BD 00 80    LDA $8000,x[$0B:8160]   A:010B X:0160 Y:0000 P:envmxdizc
+$02/8C1C 85 2A       STA $2A    [$00:122A]   A:000A X:0160 Y:0000 P:envmxdizc
+$02/8C1E BD 02 80    LDA $8002,x[$0B:8162]   A:000A X:0160 Y:0000 P:envmxdizc
+$02/8C21 85 0A       STA $0A    [$00:120A]   A:0000 X:0160 Y:0000 P:envmxdiZc
+$02/8C23 BD 04 80    LDA $8004,x[$0B:8164]   A:0000 X:0160 Y:0000 P:envmxdiZc
+$02/8C26 85 0C       STA $0C    [$00:120C]   A:0000 X:0160 Y:0000 P:envmxdiZc
+$02/8C28 BD 06 80    LDA $8006,x[$0B:8166]   A:0000 X:0160 Y:0000 P:envmxdiZc
+$02/8C2B 85 0E       STA $0E    [$00:120E]   A:0000 X:0160 Y:0000 P:envmxdiZc
+$02/8C2D BD 08 80    LDA $8008,x[$0B:8168]   A:0000 X:0160 Y:0000 P:envmxdiZc
+$02/8C30 85 10       STA $10    [$00:1210]   A:0800 X:0160 Y:0000 P:envmxdizc
+$02/8C32 BD 0A 80    LDA $800A,x[$0B:816A]   A:0800 X:0160 Y:0000 P:envmxdizc
+$02/8C35 85 12       STA $12    [$00:1212]   A:1400 X:0160 Y:0000 P:envmxdizc
+$02/8C37 BD 0C 80    LDA $800C,x[$0B:816C]   A:1400 X:0160 Y:0000 P:envmxdizc
+$02/8C3A 85 14       STA $14    [$00:1214]   A:1400 X:0160 Y:0000 P:envmxdizc
+$02/8C3C BD 0E 80    LDA $800E,x[$0B:816E]   A:1400 X:0160 Y:0000 P:envmxdizc
+$02/8C3F 85 16       STA $16    [$00:1216]   A:1400 X:0160 Y:0000 P:envmxdizc
+$02/8C41 BD 10 80    LDA $8010,x[$0B:8170]   A:1400 X:0160 Y:0000 P:envmxdizc
+$02/8C44 85 18       STA $18    [$00:1218]   A:2200 X:0160 Y:0000 P:envmxdizc
+$02/8C46 BD 12 80    LDA $8012,x[$0B:8172]   A:2200 X:0160 Y:0000 P:envmxdizc
+$02/8C49 85 1A       STA $1A    [$00:121A]   A:2200 X:0160 Y:0000 P:envmxdizc
+$02/8C4B BD 14 80    LDA $8014,x[$0B:8174]   A:2200 X:0160 Y:0000 P:envmxdizc
+$02/8C4E 85 1C       STA $1C    [$00:121C]   A:7F00 X:0160 Y:0000 P:envmxdizc
+$02/8C50 BD 16 80    LDA $8016,x[$0B:8176]   A:7F00 X:0160 Y:0000 P:envmxdizc
+$02/8C53 85 1E       STA $1E    [$00:121E]   A:4100 X:0160 Y:0000 P:envmxdizc
+$02/8C55 BD 18 80    LDA $8018,x[$0B:8178]   A:4100 X:0160 Y:0000 P:envmxdizc
+$02/8C58 85 20       STA $20    [$00:1220]   A:4100 X:0160 Y:0000 P:envmxdizc
+$02/8C5A BD 1A 80    LDA $801A,x[$0B:817A]   A:4100 X:0160 Y:0000 P:envmxdizc
+$02/8C5D 85 22       STA $22    [$00:1222]   A:8080 X:0160 Y:0000 P:eNvmxdizc
+$02/8C5F BD 1C 80    LDA $801C,x[$0B:817C]   A:8080 X:0160 Y:0000 P:eNvmxdizc
+$02/8C62 85 24       STA $24    [$00:1224]   A:8080 X:0160 Y:0000 P:eNvmxdizc
+$02/8C64 BD 1E 80    LDA $801E,x[$0B:817E]   A:8080 X:0160 Y:0000 P:eNvmxdizc
+$02/8C67 85 26       STA $26    [$00:1226]   A:0000 X:0160 Y:0000 P:envmxdiZc
+$02/8C69 64 28       STZ $28    [$00:1228]   A:0000 X:0160 Y:0000 P:envmxdiZc
+
+x58160		0A 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E
+			      -----------------------------------------------
+					Top half
+
+VRAM			
+xAA00		02 00 04 00 06 00 08 00 0a 00 0c 00 0e 00 10 00
+xAA10		01 00 03 00 05 00 07 00 09 00 0b 00 0d 00 0f 00
+
+xAB00		12 00 14 00 16 00 18 00 1a 00 1c 00 1e 00 00 00
+xAB10		11 00 13 00 15 00 17 00 19 00 1b 00 1d 00 00 00
+
+The last line of the bottom half is not coded in as it's always empty (00 00)
+
+
+########### CHARACTERS PAGE ##############
+breakpoints:
+$00/E579
+$00/9ADD
+
+Takeru : たける 
+x54392		34 00 2D 00 4D 00
+サリー			7F 00 9C 00 C8 00
+
+$00/E579 BD AB E5    LDA $E5AB,x[$00:E5AB]   A:0000 X:0000 Y:000E P:envMxdiZc
+$00/E57C 8D BE 00    STA $00BE  [$00:00BE]   A:0018 X:0000 Y:000E P:envMxdizc
+
+x65AB	18 00
+
+$01/E1DB BF 00 80 07 LDA $078000,x[$07:8420] A:FFFF X:0420 Y:0000 P:envmxdizc
+$01/E1DF 99 A0 0C    STA $0CA0,y[$00:0CA0]   A:A8CC X:0420 Y:0000 P:eNvmxdizc
+
+Input values
+Hiragana: x241F7-2424B
+Katakana: x24251-242A5
+
+Character types - tiles maps (length xC = 3 tiles)
+Hit:
+#1		x23BF0		06 21 07 21 08 21
+					16 21 17 21 18 21
+
+					60 21 61 21 0b 21 70 21 71 21 1b 21
+
+Fire
+#2					0B 21 09 21 08 21
+					1B 21 19 21 18 21
+					
+					62 21 63 21 0b 21 72 21 73 21 1b 21
+Ice
+					07 20 0A 21 08 21 
+					17 20 1A 21 18 21
+					
+					64 21 65 21 0b 21 74 21 75 21 1b 21
+
+Character jobs - tile maps (length x24 = 9 tiles)
+#1		x23DD8		01 20 02 20 03 20 00 20 00 20 00 20 00 20 00 20 00 20
+					11 20 12 20 13 20 00 20 00 20 00 20 00 20 00 20 00 20
+
+Warrior				01 20 02 20 03 20 04 20 05 20 06 20 00 20 00 20 00 20 11 20 12 20 13 20 14 20 15 20 16 20 00 20 00 20 00 20
+					07 20 08 20 09 20 0a 20 0b 20 0c 20 0d 20 00 20 00 20 17 20 18 20 19 20 1a 20 1b 20 1c 20 1d 20 00 20 00 20
+					80 20 81 20 82 20 83 20 84 20 85 20 86 20 87 20 00 20 90 20 91 20 92 20 93 20 94 20 95 20 96 20 97 20 00 20
+					20 20 21 20 22 20 23 20 24 20 25 20 00 20 00 20 00 20 30 20 31 20 32 20 33 20 34 20 35 20 00 20 00 20 00 20
+					26 20 27 20 28 20 29 20 00 20 00 20 00 20 00 20 00 20 36 30 37 30 38 30 39 30 00 20 00 20 00 20 00 20 00 20
+					67 20 68 20 69 20 6a 20 6b 20 6c 20 6d 20 6e 20 6f 20 77 20 78 20 79 20 7a 20 7b 20 7c 20 7d 20 7e 20 7f 20
+					40 20 41 20 42 20 43 20 44 20 45 20 46 20 47 20 00 20 50 20 51 20 52 20 53 20 54 20 55 20 56 20 57 20 00 20
+					2a 20 2b 20 2c 20 2d 20 00 20 00 20 00 20 00 20 00 20 3a 20 3b 20 3c 20 3d 20 00 20 00 20 00 20 00 20 00 20
+					48 20 49 20 4a 20 4b 20 4c 20 4d 20 4e 20 00 20 00 20 58 20 59 20 5a 20 5b 20 5c 20 5d 20 5e 20 00 20 00 20
+					60 20 61 20 62 20 63 20 64 20 65 20 66 20 00 20 00 20 70 20 71 20 72 20 73 20 74 20 75 20 76 20 00 20 00 20
+
+
+Controllers		(length x30 - 12 tiles)
+NORMAL MODE
+Joypad-1	x23CB8	66 20 67 20 63 20 64 20 9A 20 9B 20 9C 20 9D 20 9E 20 9F 20 8F 20 00 20 
+					76 20 77 20 73 20 74 20 AA 20 AB 20 AC 20 AD 20 AE 20 AF 20 00 20 00 20
+					
+					48 21 49 21 4a 21 4b 21 4c 21 4d 21 4e 21 00 20 00 20 00 20 00 20 00 20 58 21 59 21 5a 21 5b 21 5c 21 5d 21 5e 21 00 20 00 20 00 20 00 20 00 20
+					
+Joypad-2	x23CE8	68 20 69 20 63 20 64 20 9A 20 9B 20 9C 20 9D 20 9E 20 9F 20 8F 20 00 20 
+					78 20 79 20 73 20 74 20 AA 20 AB 20 AC 20 AD 20 AE 20 AF 20 00 20 00 20
+
+					48 21 49 21 4a 21 4b 21 4c 21 4d 21 4f 21 00 20 00 20 00 20 00 20 00 20 58 21 59 21 5a 21 5b 21 5c 21 5d 21 5f 21 00 20 00 20 00 20 00 20 00 20
+
+Computer	x23DA8	B7 20 B8 20 B9 20 BA 20 BB 20 BC 20 BD 20 BE 20 BF 20 00 20 00 20 00 20 
+					C7 20 C8 20 C9 20 CA 20 CB 20 CC 20 CD 20 CE 20 CF 20 00 20 00 20 00 20
+					
+					20 21 21 21 22 21 23 21 24 21 25 21 26 21 00 20 00 20 00 20 00 20 00 20 30 21 31 21 32 21 33 21 34 21 35 21 36 21 00 20 00 20 00 20 00 20 00 20
+
+					
+Page.1		x23C98	62 20 67 20 76 20 77 20
+					e3 20 e4 20 f3 20 f4 20
+
+Gear types		
+Gems		x2418F	84 21 85 21 90 21 91 21 80 21 81 21 90 21 91 21 82 21 83 21 90 21 91 21
+Swords		x241A7	84 21 85 21 93 21 94 21 80 21 81 21 93 21 94 21 82 21 83 21 93 21 94 21
+Shields		x241BF	84 21 85 21 86 21 87 21 80 21 81 21 86 21 87 21 82 21 83 21 86 21 87 21
+Armors		x241D7	84 21 85 21 96 21 97 21 80 21 81 21 96 21 97 21 82 21 83 21 96 21 97 21
+
+
+たける		Takeru
+サリー		Sally
+パレット	Palette
+ジャック	Jack
+ティキ		Tiki
+フラボノ	Flavono
+ボンメル	Bonmel
+とみとる	Tomitori
+ロイド		Lloyd
+さやか		Sayaka
+
+
+AUDITION MODE
+オーディション	Audition
+神話ファンタジー	Fantasy
+ミュージリカル	Musical
+
+Fantasy		x240E8	
+Musical		x24118		B0 20 B1 20 B2 20 B3 20 B4 20 B5 20 B6 20 00 20 00 20 00 20 00 20 00 20 C0 20 C1 20 C2 20 C3 20 C4 20 C5 20 C6 20 D4 20 00 20 00 20 00 20 00 20
+
+###### PLAYER ORDER SCREEN #####
+
+1コン		x23C20		66 20 67 20 63 20 64 20 65 20 76 20 77 20 73 20 74 20 75 20
+					ca 20 cb 20 cc 20 cd 20 ce 20 da 20 db 20 dc 20 dd 20 de 20
+2コン		x23C34		68 20 69 20 63 20 64 20 65 20 78 20 79 20 73 20 74 20 75 20
+					ca 20 cb 20 cc 20 cd 20 cf 20 da 20 db 20 dc 20 dd 20 df 20
+COM		x23C84		80 20 81 20 82 20 83 20 84 20 85 20 86 20 87 20 88 20 89 20
+					00 20 20 21 21 21 8d 21 00 20 00 20 30 21 31 21 9d 21 00 20
+1234				66 20 67 20 76 20 77 20
+					68 20 69 20 78 20 79 20 
+					6A 20 6B 20 7A 20 7B 20 
+					6C 20 6D 20 7C 20 7D 20
+					
+					20 21 21 21 30 21 31 21 40 21 41 21 50 21 51 21 2e 21 2f 21 3e 21 3f 21 4e 21 4f 21 5e 21 5f 21
+
+###### MAP SELECT #####
+
+Map names
+Fantasy		x23F40	60 20 61 20 62 20 63 20 64 20 65 20 00 20 00 20 00 20 00 20 00 20 00 20 70 20 71 20 72 20 73 20 74 20 75 20 00 20 00 20 00 20 00 20 00 20 00 20
+					26 20 27 20 28 20 29 20 2a 20 2b 20 2c 20 2d 20 2e 20 2f 20 00 20 00 20 36 20 37 20 38 20 39 20 3a 20 3b 20 3c 20 3d 20 3e 20 3f 20 00 20 00 20 
+					c0 20 c1 20 c2 20 c3 20 c4 20 c5 20 c6 20 c7 20 00 20 00 20 00 20 00 20 d0 20 d1 20 d2 20 d3 20 d4 20 d5 20 d6 20 d7 20 00 20 00 20 00 20 00 20
+					40 20 41 20 42 20 43 20 44 20 45 20 00 20 00 20 00 20 00 20 00 20 00 20 50 20 51 20 52 20 53 20 54 20 55 20 00 20 00 20 00 20 00 20 00 20 00 20
+					46 20 47 20 48 20 49 20 4a 20 4b 20 00 20 00 20 00 20 00 20 00 20 00 20 56 20 57 20 58 20 59 20 5a 20 5b 20 00 20 00 20 00 20 00 20 00 20 00 20
+					8a 20 8b 20 8c 20 8d 20 8e 20 00 20 00 20 00 20 00 20 00 20 00 20 00 20 9a 20 9b 20 9c 20 9d 20 9e 20 00 20 00 20 00 20 00 20 00 20 00 20 00 20
+					aa 20 ab 20 ac 20 ad 20 ae 20 00 20 00 20 00 20 00 20 00 20 00 20 00 20 ba 20 bb 20 bc 20 bd 20 be 20 00 20 00 20 00 20 00 20 00 20 00 20 00 20
+					
+Audition maps
+x240e8				98 20 99 20 9a 20 9b 20 9c 20 9d 20 00 20 00 20 00 20 00 20 00 20 00 20 
+Fantasy				A8 20 a9 20 aa 20 ab 20 ac 20 ad 20 00 20 00 20 00 20 00 20 00 20 00 20 
+Musical				C0 20 c1 20 c2 20 c3 20 c4 20 c5 20 00 20 00 20 00 20 00 20 00 20 00 20 
+					D0 20 D1 20 d2 20 d3 20 d4 20 d5 20 00 20 00 20 00 20 00 20 00 20 00 20
+
+98 20 99 20 9a 20 9b 20 9c 20 9d 20 00 20 00 20 00 20 00 20 00 20 00 20 A8 20 a9 20 aa 20 ab 20 ac 20 ad 20 00 20 00 20 00 20 00 20 00 20 00 20 C0 20 c1 20 c2 20 c3 20 c4 20 c5 20 00 20 00 20 00 20 00 20 00 20 00 20 D0 20 D1 20 d2 20 d3 20 d4 20 d5 20 00 20 00 20 00 20 00 20 00 20 00 20
+
+
+########## SPRITES ################
+2D98C-2D9C3		Title screen - Selection sprite
+24 00 00 00 FF FF 6E 00 10 00 FF FF 6E 00 20 00 FF FF 6E 00 30 00 FF FF 6E 00 40 00 FF FF 6E 00 50 00 FF FF 6E 00 60 00 FF FF 6E 00 70 00 FF FF 26 00 80 00 FF FF FF FF
+
+$00/F1C5 BF 00 00 05 LDA $050000,x[$05:D98C] A:0080 X:D98C Y:0004 P:eNvmxdizc
+$00/F1C9 C9 FF FF    CMP #$FFFF              A:0024 X:D98C Y:0004 P:envmxdizc
+
+$00/EEBF C2 30       REP #$30                A:0200 X:E0A9 Y:0000 P:envmxdiZC
+$00/EEC1 B9 99 04    LDA $0499,y[$00:0499]   A:0200 X:E0A9 Y:0000 P:envmxdiZC
+$00/EEC4 F0 2C       BEQ $2C    [$EEF2]      A:0005 X:E0A9 Y:0000 P:envmxdizC
+$00/EEC6 B9 B1 04    LDA $04B1,y[$00:04B1]   A:0005 X:E0A9 Y:0000 P:envmxdizC
+$00/EEC9 C9 FF FF    CMP #$FFFF              A:01B4 X:E0A9 Y:0000 P:envmxdizC
+$00/EECC F0 18       BEQ $18    [$EEE6]      A:01B4 X:E0A9 Y:0000 P:envmxdizc
+$00/EECE B9 B7 04    LDA $04B7,y[$00:04B7]   A:01B4 X:E0A9 Y:0000 P:envmxdizc
+$00/EED1 18          CLC                     A:0000 X:E0A9 Y:0000 P:envmxdiZc
+$00/EED2 79 B1 04    ADC $04B1,y[$00:04B1]   A:0000 X:E0A9 Y:0000 P:envmxdiZc
+$00/EED5 0A          ASL A                   A:01B4 X:E0A9 Y:0000 P:envmxdizc
+$00/EED6 AA          TAX                     A:0368 X:E0A9 Y:0000 P:envmxdizc
+$00/EED7 BF 00 C0 05 LDA $05C000,x[$05:C368] A:0368 X:0368 Y:0000 P:envmxdizc
+$00/EEDB AA          TAX                     A:D98A X:0368 Y:0000 P:eNvmxdizc
+$00/EEDC 1A          INC A                   A:D98A X:D98A Y:0000 P:eNvmxdizc
+$00/EEDD 1A          INC A                   A:D98B X:D98A Y:0000 P:eNvmxdizc
+$00/EEDE 85 D2       STA $D2    [$00:1492]   A:D98C X:D98A Y:0000 P:eNvmxdizc
+$00/EEE0 BF 00 00 05 LDA $050000,x[$05:D98A] A:D98C X:D98A Y:0000 P:eNvmxdizc
+$00/EEE4 85 D4       STA $D4    [$00:1494]   A:F9BF X:D98A Y:0000 P:eNvmxdizc
+$00/EEE6 20 F3 EE    JSR $EEF3  [$00:EEF3]   A:F9BF X:D98A Y:0000 P:eNvmxdizc
+
+########## PASSWORDS ###############
+Values : 00 to 3F
+Left to right
+
+
+########## SUBROUTINES ##########
+
+$02/83A5
+
+$02/83A3 E2 20       SEP #$20                A:83A3 X:86C0 Y:0000 P:envmxdizc
+$02/83A5 BF 02 00 07 LDA $070002,x[$07:86C2] A:83A3 X:86C0 Y:0000 P:envMxdizc
+$02/83A9 8D 80 03    STA $0380  [$02:0380]   A:8300 X:86C0 Y:0000 P:envMxdiZc
+$02/83AC BF 03 00 07 LDA $070003,x[$07:86C3] A:8300 X:86C0 Y:0000 P:envMxdiZc
+$02/83B0 85 2C       STA $2C    [$00:122C]   A:8300 X:86C0 Y:0000 P:envMxdiZc
+$02/83B2 BF 04 00 07 LDA $070004,x[$07:86C4] A:8300 X:86C0 Y:0000 P:envMxdiZc
+$02/83B6 85 2E       STA $2E    [$00:122E]   A:8314 X:86C0 Y:0000 P:envMxdizc
+
+
+
+REP #$20                A:83A3 X:8005 Y:0000 P:envMxdizc
+STX $0400  [$02:0400]   A:83A3 X:8005 Y:0000 P:envmxdizc
+STA $0402
+TXA                     A:83A3 X:8005 Y:0000 P:envmxdizc
+CMP #$8000              A:8005 X:8005 Y:0000 P:eNvmxdizc
+BMI $xx    [$80D2]      A:8005 X:8005 Y:0000 P:envmxdizC
+LDA $0402
+SEP #$20                A:8005 X:8005 Y:0000 P:envmxdizC
+LDA $240002,x[$24:8007] A:8005 X:8005 Y:0000 P:envMxdizC
+STA $0380
+LDA $240002,x[$24:8007]
+STA $2C
+LDA $240002,x[$24:8007]
+STA $2E
+RTL                     A:8001 X:8005 Y:0000 P:envMxdizC
+LDA $0402
+SEP #$20                A:8005 X:8005 Y:0000 P:envmxdizC
+LDA $250002,x[$25:8007] A:8005 X:8005 Y:0000 P:envMxdizC
+STA $0380
+LDA $250002,x[$25:8007]
+STA $2C
+LDA $250002,x[$25:8007]
+STA $2E
+RTL
+
+
+$02/8141 E2 20       SEP #$20                A:8141 X:8016 Y:0000 P:envmxdizc
+$02/8143 BF 02 00 07 LDA $070002,x[$07:8018] A:8141 X:8016 Y:0000 P:envMxdizc
+$02/8147 29 0F       AND #$0F                A:8100 X:8016 Y:0000 P:envMxdiZc
+$02/8149 8D 80 03    STA $0380  [$02:0380]   A:8100 X:8016 Y:0000 P:envMxdiZc
+$02/814C BF 02 00 07 LDA $070002,x[$07:8018] A:8100 X:8016 Y:0000 P:envMxdiZc
+$02/8150 29 F0       AND #$F0                A:8100 X:8016 Y:0000 P:envMxdiZc
+$02/8152 4A          LSR A                   A:8100 X:8016 Y:0000 P:envMxdiZc
+$02/8153 4A          LSR A                   A:8100 X:8016 Y:0000 P:envMxdiZc
+$02/8154 4A          LSR A                   A:8100 X:8016 Y:0000 P:envMxdiZc
+$02/8155 4A          LSR A                   A:8100 X:8016 Y:0000 P:envMxdiZc
+$02/8156 85 2C       STA $2C    [$00:122C]   A:8100 X:8016 Y:0000 P:envMxdiZc
+$02/8158 BF 03 00 07 LDA $070003,x[$07:8019] A:8100 X:8016 Y:0000 P:envMxdiZc
+$02/815C 8D 46 0F    STA $0F46  [$02:0F46]   A:8180 X:8016 Y:0000 P:eNvMxdizc
+$02/815F C2 30       REP #$30                A:8180 X:8016 Y:0000 P:eNvMxdizc
+
+########### MOVE MENU TILE MAP ############
+{Map menu}
+1352c	移動			Move							0C 00 00 01 01 01 02 01 03 01 00 00 00 00 FF FF
+													0C 00 10 01 11 01 12 01 13 01 00 00 00 00 FF FF
+1354c	状態			Status							0C 00 04 01 05 01 06 01 07 01 08 01 00 00 FF FF
+													0C 00 14 01 15 01 16 01 17 01 18 01 00 00 FF FF
+1356c	MONSTER
+1358c	了イテ厶		Items							0C 00 09 01 0A 01 0B 01 0C 01 0D 01 00 00 FF FF
+													0C 00 19 01 1A 01 1B 01 1C 01 1D 01 00 00 FF FF
+135ac	力-ド交換		Switch cards / SWITCH A CARD
+135cc	HP G
+135ec	マップ			Map								0C 00 20 01 21 01 22 01 00 00 00 00 00 00 FF FF
+													0C 00 30 01 31 01 32 01 00 00 00 00 00 00 FF FF
+136c2	ない交換		No exchange / NO SWITCH
+136e2	捨て???		Discard
+13702	捨てる物		Discard / REMOVE ITEM
+{Combat menu}
+13722	戦闘参加		Battle entry / GET READY
+13742	入力終了		Ready							0C 00 23 01 24 01 25 01 26 01 27 01 00 00 FF FF
+													0C 00 33 01 34 01 35 01 36 01 37 01 00 00 FF FF
+13762	誰に行動		Target / SELECT TARGET
+13782	行動			Action							0C 00 28 01 29 01 2a 01 2b 01 2c 01 00 00 FF FF
+													0C 00 38 01 39 01 3a 01 3b 01 3c 01 00 00 FF FF
+137a2	状態			Status
+137c2	はい			Yes
+137e2	いいえ		No								0C 00 0E 01 0F 01 00 00 00 00 00 00 00 00 FF FF
+													0C 00 1E 01 1F 01 00 00 00 00 00 00 00 00 FF FF
+13804	stdf
+1383e				{empty}
+1385e	何を行動		Action / SELECT ACTION
+1387e	マップ			Map
+(Martial Artist training)
+1389e	打攻防力		TRAIN HIT						0C 00 40 01 41 01 42 01 43 01 64 00 65 00 FF FF
+													0C 00 50 01 51 01 52 01 53 01 74 00 75 00 FF FF
+138be	炎攻防力		TRAIN FIRE
+138de	冷攻防力		TRAIN ICE
+138fe	やらない		Skip
+
+1395e	保険メダル		Insurance / Bank Safe			0c 00 d6 01 d7 01 d8 01 d9 01 00 00 00 00 ff ff
+													0c 00 da 01 db 01 dc 01 dd 01 00 00 00 00 ff ff
+1397e	お守りメダル		Amulet							0C 00 48 01 49 01 4a 01 4b 01 4c 00 00 00 FF FF
+													0C 00 58 01 59 01 5a 01 5b 01 5c 00 00 00 FF FF
+1399e	6歩キップ	*	6 Step Ticket
+139be	薬草		*	Medicinal herb					0c 00 60 01 61 01 62 01 63 01 00 00 00 00 ff ff
+													0c 00 70 01 71 01 72 01 73 01 00 00 00 00 ff ff
+139de	1歩キップ	*	1 Step Ticket					0C 00 c5 01 c0 01 c1 01 c2 01 c3 01 c4 01 FF FF
+													0c 00 d0 01 d1 01 d2 01 d3 01 d4 01 00 00 ff ff
+139fe	2歩キップ		2 Step Ticket
+13a1e	3歩キップ		3 Step Ticket
+13a3e	4歩キップ		4 Step Ticket
+13a5e	5歩キップ		5 Step Ticket
+13a7e	全員決闘		Brawl							0c 00 64 01 65 01 66 01 67 01 00 00 00 00 ff ff
+													0c 00 74 01 75 01 76 01 77 01 00 00 00 00 ff ff
+13a9e	決闘状	*	Duel							0c 00 68 01 69 01 6a 01 6b 01 00 00 00 00 ff ff
+													0c 00 78 01 79 01 7a 01 7b 01 00 00 00 00 ff ff
+
+
+アイスビーム		Ice beam
+
+
+Move
+x1352c		0C 00 00 01 01 01 02 01 00 00 00 00 00 00 FF FF 
+			0C 00 10 01 11 01 12 01 00 00 00 00 00 00 FF FF
+			
+			0C 00 00 01 01 01 02 01 03 01 00 00 00 00 FF FF 
+			0C 00 10 01 11 01 12 01 13 01 00 00 00 00 FF FF
+
+VRAM		01 21 02 21 03 21 00 20 00 20 00 20 00 00 00 00
+
+Card Switch
+x135AC		0C 00 27 00 00 00 E8 01 2A 01 2B 01 2C 01 FF FF
+			0C 00 37 00 C4 01 F8 01 3A 01 3B 01 3C 01 FF FF
+			
+			0C 00 09 01 0a 01 0b 01 0c 01 0d 01 00 00 FF FF
+			0C 00 19 01 1a 01 1b 01 1c 01 1d 01 00 00 FF FF
+			
+Items
+x1358C		0C 00 03 01 04 01 05 01 06 01 07 01 00 00 FF FF 
+			0C 00 13 01 14 01 15 01 16 01 17 01 18 01 FF FF
+			
+			0C 00 04 01 05 01 06 01 07 01 08 01 00 00 FF FF 
+			0C 00 14 01 15 01 16 01 17 01 18 01 00 00 FF FF
+
+Check			
+x1354C		0C 00 09 01 0A 01 0B 01 00 00 00 00 00 00 FF FF 
+			0C 00 19 01 1A 01 1B 01 00 00 00 00 00 00 FF FF
+			
+			0C 00 20 01 21 01 22 01 23 01 24 01 00 00 FF FF 
+			0C 00 30 01 31 01 32 01 33 01 34 01 00 00 FF FF
+
+Map
+x135EC		0C 00 26 01 27 01 28 01 29 01 00 00 00 00 FF FF 
+			0C 00 36 01 37 01 38 01 39 01 00 00 00 00 FF FF
+			
+			0C 00 25 01 26 01 27 01 00 00 00 00 00 00 FF FF 
+			0C 00 35 01 36 01 37 01 00 00 00 00 00 00 FF FF
+			
+			
+x138FE
+やらない
+
+
+x1395E		Items
+Insurance Medal
+Amulet
+6 Steps
+Herb
+1
+2
+3
+4
+5 Steps
+Brawl
+
+x13C82		Gear
+Hit Gem Lv1
+Hit Sword Lv1
+Hit Shield Lv1
+Hit Armor Lv1
+Repeat for Lv2 to Lv9
+Repeat for Fire
+Repeat for Ice
+
+
+########## PASSWORD ##############
+
+$00/A5EF E2 20       SEP #$20                A:B218 X:96EF Y:000C P:envmxdizc
+$00/A5F1 A9 1B       LDA #$1B                A:B218 X:96EF Y:000C P:envMxdizc
+
+Works:
+$00/A5EF E2 20       SEP #$20                A:AC51 X:95F1 Y:000C P:envmxdizc
+$00/A5F1 A9 29       LDA #$29                A:AC51 X:95F1 Y:000C P:envMxdizc
+$00/A5F3 8D BE 00    STA $00BE  [$02:00BE]   A:AC29 X:95F1 Y:000C P:envMxdizc
+
+x25EF	E2 20 A9 1B
+		22 00 83 20		(x100300)
+		
+x100300	
+C9 18 B2    	CMP #$B218
+D0 05       	BNE $05
+E2 20
+A9 1B
+6B
+E2 20
+A9 2F
+6B
+
+C9 18 B2 D0 05 E2 20 A9 2F 6B E2 20 A9 1B 6B
+
+############ ##############
+お星さま
+Song
+♪お星さ~ま{NL}キ~ラキラ

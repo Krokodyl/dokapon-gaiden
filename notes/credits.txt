@@ -1,0 +1,40 @@
+c166	スーパーバイザー		二村 俊行										Executive Producer	Toshiyuki Futamura
+c1ae	プロデューサー		小川 真司					Producer			Shinji Ogawa
+c1dc	サブプロデューサー		岡本 宏{NL}  梶井 健		Production Manager	Hiroshi Okamoto / KEN SAKURAI
+c21a	マネージャ			川越 千夏					Manager				Kawagoe China
+c244	チーフグラフィック		谷嶋 彰義					Graphic Chief		?
+		グラフィック			小林 加代子{NL}  喜友名 盛幸
+c2b0	メインプログラム		阿部 敬志
+		サブプログラム		黒沢 尚久
+c308	ディレクション			鶴田 道孝
+		デザイン			河内 厚典
+c358	サウンド			ビィトップ
+c380	スペシャルサンクス		吉武 真{NL}  昆 治生
+		スペシャルサンクス		天満 重宏
+c3e6	キャラクターデザイン	さとうげん
+
+		Gaiden			321
+c166	Supervisor		Executive Producer		Toshiyuki Futamura
+c1ae	Producer		Producer				Shinji Ogawa
+c1dc	Sub-producer	Production Manager		Hiroshi Okamoto
+												Ken Kajii
+c21a	Manager			Assistant Producer		Kawagoe China
+c244	Chief Graphic	Graphics Lead			Akiyoshi Tanishima		
+		Graphic			Graphics				Kayoko Kobayashi
+												Moriyuki Kiyuna
+c2b0	Main Program	Lead Programmer			Takashi Abe
+		Subprogram		Programmer				Takahisa Kurosawa
+c308	Direction		Direction				Makoto Yoshitake
+		Design			Design					Atsunori Kawachi
+c358	Sound			Sound					Betop
+c380	Special Thanks							Makoto Yoshitake
+												Haruki Kon
+												Shigehiro Temma
+c3e6	Character Design						Gen Sato								
+
+
+C41A	Minister, how is our movie "Dokapon King" doing?
+c456	Huh! One hour after release...
+c49c
+c4d8	Hmm! Immediately canceled...
+

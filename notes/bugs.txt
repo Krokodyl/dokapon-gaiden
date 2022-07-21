@@ -1,0 +1,2 @@
+"Go fight each other" remains on sceen
+possible issue due to 0f80 character

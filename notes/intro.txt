@@ -1,0 +1,47 @@
+B516
+B5CE
+
+b61e	2	8000	Like I said Minister, I've decided to make a movie about the Dokapon Kingdom.
+b66e	1	0		How come?
+
+b68c	2	A000	This Dokapon Kingdom that I rule! Many monsters have been terrifying since the days of the predecessor king
+b6ec	2	C800	Great! Yukan! Catchooee !! All the demons were defeated before the power of King Dokapon.
+b76a	1	1000	Actually, I've sweet talked heroes into saving us from monsters...
+
+b7ae	2	7000	Make a movie of such a strong Dokapon Kingdom and leave it to posterity !!
+b802	1	5000	Your excellence...is always...selfish...
+b846	1	4000	Minister, what are you trying to say?
+b86e	1	1000	No...nothing!
+b88c	1	4000	No, it's really wonderful! As expected, you're the best of kings!
+b8cc	1	2000	Is that so?
+b8e6	1	7000	By the way, my King, who will play the leading role in the movie?
+b92c
+b948
+
+
+b994				Whoever auditions in the tournament with Dokapon rules and earns the most gold will be the leading role !!
+b9fa
+
+ba28				The gold earned by the winner will be used to make this movie !!
+ba6c
+ba88
+
+This is the good old{NL}Dokapon Kingdom.{NL}It has prospered{0180}{8000}{0780}for a long time{NL}despite the threat{NL}of monsters.{0180}{8000}{0780}One day, the king{NL}Dokapon VII came up{NL}with an absurd event.{0180}{8000}{0780}{0A80}{EL}
+What?! King !!{NL}What did you say now?{0180}{8000}{0780}{0A80}{EL}
+
+
+だからだ 大臣{0180}N{0780}ワガハイは{NL}
+ドカポン王国の 映画を{NL}
+作る事に したんだわさ{0180}{6000}{0780}{0A80}{EL}
+
+
+
+ワガハイの おさめる{NL}このドカポン王国!{0180}{4000}{0780}先代王の 時代から{NL}数々の魔物が{NL}おそってきたが{0180}{6000}{0780}{0A80}{EL}
+
+えらい!{0180}{1000} ゆうかん!{NL}{0180}{1000}カッチョイーーー!!{NL}{0180}{1800}{0380}ドカポン王の 力の前に{0180}{4000}{0780}あらゆる 魔物が{NL}敗れさったのだわさ{0180}{5000}{0780}{0A80}{EL}
+
+
+
+First dialog box
+
+FE52
