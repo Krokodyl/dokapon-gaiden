@@ -1,11 +1,34 @@
 package services;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constants {
 
     public static String END_OF_LINE_CHARACTER_HEXA = "0080";
     public static String SUBPOINTER_02_START_CHARACTER_HEXA = "0280";
     public static String SUBPOINTER_03_START_CHARACTER_HEXA = "0380";
     public static String SUBPOINTER_END_CHARACTER_HEXA = "0480";
+    
+    // Parameter length in bytes following special codes
+    public static Map<String, Integer> specialCodes = new HashMap<String, Integer>() {{
+        put("0180", 2);
+        put("0280", 2);
+        put("0380", 2);
+        put("0980", 2);
+        put("0B80", 2);
+        put("0C80", 3);
+        put("0D80", 3);
+        put("1080", 3);
+        put("1180", 2);
+        put("1280", 2);
+        put("1480", 2);
+        put("1780", 1);
+        put("1D80", 1);
+        put("1E80", 1);
+        put("1F80", 1);
+    }};
+    
     
     public static String END_OF_LINE_00_CHARACTER_HEXA = "00";
     public static byte END_OF_LINE_CHARACTER_BYTE = (byte) Integer.parseInt("0080",16);

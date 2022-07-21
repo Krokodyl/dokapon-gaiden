@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -32,9 +33,9 @@ public class DokaponGaiden {
         }
 
         LzDecompressor decompressor = new LzDecompressor();
-        decompressor.decompressData(data, "d399e");
+        decompressor.decompressData(data, "cf8f8");
         decompressor.printStats();
-        DataWriter.saveData("src/main/resources/gen/d399e.data", decompressor.getDecompressedData());
+        DataWriter.saveData("src/main/resources/gen/cf8f8.data", decompressor.getDecompressedData());
         //Decompressor decompressor = new Decompressor(data, "28014");
         //decompressor.decompressData();
         //decompressor.printOutput();
@@ -44,20 +45,65 @@ public class DokaponGaiden {
         Translator translator = new Translator(latinLoader);
 
         ImageReader imageReader = new ImageReader();
+        ImageReader.extractMenus(data, Integer.parseInt("1352C",16), Integer.parseInt("1360C",16));
+        ImageReader.extractMenus(data, Integer.parseInt("13612",16), Integer.parseInt("13631",16));
+        ImageReader.extractMenus(data, Integer.parseInt("13642",16), Integer.parseInt("13801",16));
+        ImageReader.extractMenus(data, Integer.parseInt("13804",16), Integer.parseInt("13833",16));
+        ImageReader.extractMenus(data, Integer.parseInt("1383E",16), Integer.parseInt("1391D",16));
+        ImageReader.extractMenus(data, Integer.parseInt("1395E",16), Integer.parseInt("13ABD",16));
+
+        ImageReader.generateLatinMenus();
+                
         List<NameTable> names = JsonLoader.loadNames();
         Map<String, List<Letter>> syllables = imageReader.generateSyllables(names, latinLoader);
         DataWriter.writeNames(names, syllables, data);
         imageReader.writeLatin(data);
+
+        //imageReader.turnImageIntoTiles(10*8, "5A16","/sprites/title-screen-dokapon.png","title-screen-dokapon.png","title-screen-dokapon.data");
+        //imageReader.turnImageIntoTiles(13*8, "9D3A", "/sprites/title-screen-gaiden.png","title-screen-gaiden.png","title-screen-gaiden.data");
+        //imageReader.turnImageIntoTiles(00*8,"E03A","/sprites/title-screen-fiery.png","title-screen-fiery.png","title-screen-fiery.data");
+
+        imageReader.generateSpritePasswordGenScreen();
+        imageReader.generateSpriteMoveMenu();
+        imageReader.generateSpriteEnd();
+        imageReader.generateSpriteTitleScreen();
+        imageReader.generateTitleScreenTilesMap();
+        imageReader.generateSpriteMapSelectScreen();
+        
+        //imageReader.generateSpriteDuelCard();
+        //imageReader.compressSpriteDuelCard();
+        /*imageReader.generateSpriteCharacterNameScreen();
+        imageReader.generateSpritePasswordScreen();
+        imageReader.generatePasswordScreenTilesMap();
+        
+        imageReader.generateSpriteMoveMenu();
+
+        imageReader.generateSpriteTitleScreen();
+        
+        imageReader.generateSpriteMenuSelection();
+        imageReader.generateInputScreenTilesMap();
+        imageReader.generateInputMoreScreenTilesMap();
+        imageReader.generateSpriteCharacterSelectScreen();
+        imageReader.generateCharacterSelectScreenTilesMap();
+        imageReader.generateCharacterSelectAuditionScreenTilesMap();
+        imageReader.generateSpriteRulesScreen();*/
+        
+        
+        /*imageReader.generateTitleScreenTilesMap();
+        imageReader.generateTitleScreenDokaponTilesMap();
         
         imageReader.generateSpriteRulesScreen();
         imageReader.generateRulesScreenTilesMap();
         imageReader.generateSpriteInputScreen();
-        imageReader.generateInputScreenTilesMap();
-        imageReader.generateSpriteCharacterSelectScreen();
-        imageReader.generateCharacterSelectScreenTilesMap();
         
-        //imageReader.generateSpriteTitleScreen();
-        //imageReader.generateTitleScreenTilesMap();
+        
+        imageReader.generateCharacterSelectAuditionScreenTilesMap();
+        imageReader.generatePlayerOrderScreenTilesMap();
+        imageReader.generateSpriteMapSelectScreen();
+        imageReader.generateMapScreenTilesMap();
+        */
+        
+        
         //imageReader.loadFontImage2bppSquelched("src/main/resources/images/latin/char-000.png", new Palette2bpp("/palettes/palette-latin.png"), FontColor.MAP_2BPP_COLOR_02);
         //System.out.println(image2bpp);
 
@@ -107,11 +153,20 @@ public class DokaponGaiden {
             System.out.println("--------------------------------------");
         }
 
+        PointerTable cleanTable = new PointerTable(200);
+        Map<Integer, PointerData> subMap = new HashMap<>();
         for (PointerTable table:subTables) {
-            System.out.println(String.format("---------------- Table %s ---------------------",table.getId()));
-            //new TablePrinter().generateTranslationFile2(table, data, japanese, "src/main/resources/gen/SubTable "+table.getId()+".txt");
-            System.out.println("--------------------------------------");
+            for (PointerData pointerData : table.getDataJap()) {
+                if (!subMap.containsKey(pointerData.getValue())) {
+                    subMap.put(pointerData.getValue(), pointerData);
+                    cleanTable.addPointerDataJap(pointerData);
+                }
+            }
         }
+        
+        System.out.println(String.format("---------------- Table %s ---------------------",cleanTable.getId()));
+        //new TablePrinter().generateTranslationFile2(cleanTable, data, japanese, "src/main/resources/gen/SubTable "+cleanTable.getId()+".txt");
+        System.out.println("--------------------------------------");
 
         for (PointerTable table:tables) {
             DataReader.generateEnglish(translator, table, data);

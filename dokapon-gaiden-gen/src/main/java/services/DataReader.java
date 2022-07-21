@@ -36,7 +36,7 @@ public class DataReader {
                 String[] split = line.split(Constants.TRANSLATION_KEY_VALUE_SEPARATOR);
                 if (split.length>0) {
                     if (split[0].equals(Constants.TRANSLATION_KEY_OFFSET)) {
-                        p.setOffset(Integer.parseInt(split[1], 16));
+                        p.addOffset(Integer.parseInt(split[1], 16));
                     }
                     if (split[0].equals(Constants.TRANSLATION_KEY_OFFSETDATA)) {
                         p.setOffsetData(Integer.parseInt(split[1], 16));
@@ -104,7 +104,7 @@ public class DataReader {
                 String[] split = line.split(Constants.TRANSLATION_KEY_VALUE_SEPARATOR);
                 if (split.length>0) {
                     if (split[0].equals(Constants.TRANSLATION_KEY_OFFSET)) {
-                        p.setOffset(Integer.parseInt(split[1], 16));
+                        p.addOffset(Integer.parseInt(split[1], 16));
                     }
                     if (split[0].equals(TRANSLATION_KEY_JPN)) {
                         if (split.length>1) jpn = split[1];
@@ -115,10 +115,10 @@ public class DataReader {
                     if (!eng.isEmpty() && !jpn.isEmpty()) {
                         String[] splitJpn = jpn.split("(?<=\\G.{8})");
                         String[] splitEng = eng.split("(?<=\\G.{8})");
-                        if (p.getOffset()>Integer.parseInt("BFA7",16))
+                        /*if (p.getOffset()>Integer.parseInt("BFA7",16))
                         for (int k=0;k<splitJpn.length;k++) {
                             writer.println(splitEng[k]+"="+splitJpn[k]);
-                        }
+                        }*/
                         eng="";
                         jpn="";
                     }
@@ -209,7 +209,7 @@ public class DataReader {
                     int b = (data[i++] & 0xFF);
                     int value = b * 256 + a;
                     p.setValue(value);
-                    p.setOffset(offset);
+                    p.addOffset(offset);
                     int offsetData = value + range.getShift();
                     p.setOffsetData(offsetData);
                     pointers.add(p);
@@ -226,7 +226,7 @@ public class DataReader {
                     int b = (data[i+7] & 0xFF);
                     int value = b * 256 + a;
                     p.setValue(value);
-                    p.setOffset(i+6);
+                    p.addOffset(i+6);
                     p.setOffsetMenuData(i);
                     int offsetData = value + range.getShift();
                     byte[] bytes = readUntilEndOfLine(data, offsetData);
@@ -250,9 +250,17 @@ public class DataReader {
                 int b = (data[i++] & 0xFF);
                 int value = b * 256 + a;
                 p.setValue(value);
-                p.setOffset(offset);
+                p.addOffset(offset);
                 int offsetData = value + range.getShift();
                 p.setOffsetData(offsetData);
+                boolean found = false;
+                for (PointerData pointer : pointers) {
+                    if (pointer.getOffsetData()==offsetData) {
+                        pointer.addOffset(offset);
+                        found = true;
+                    }
+                }
+                if (!found)
                 pointers.add(p);
             }
         }
@@ -316,6 +324,13 @@ public class DataReader {
                     String lastCode = getLastCode(bytesSub);
                     subPointers.add(subPointer);
                     if (lastCode.equals(END_OF_LINE_CHARACTER_HEXA)) endData = true;
+                } else if (specialCodes.containsKey(code)) {
+                    int paramCount = specialCodes.get(code);
+                    while (paramCount>0) {
+                        b = data[offset++];
+                        outputStream.write(b);
+                        paramCount--;
+                    }
                 }
             }
             byte[] bytes = outputStream.toByteArray();
@@ -486,7 +501,7 @@ public class DataReader {
         int b = (data[i++] & 0xFF);
         int value = b * 256 + a;
         p.setValue(value);
-        p.setOffset(offset);
+        p.addOffset(offset);
         int offsetData = value + shift;
         p.setOffsetData(offsetData);
         return p;
@@ -603,6 +618,24 @@ public class DataReader {
             byte b = data[offset++];
             code = Utils.toHexString(a)+Utils.toHexString(b);
             count=count+2;
+            if (specialCodes.containsKey(code)) {
+                int param = specialCodes.get(code);
+                offset+=param;
+                count=count+param;
+            }
+            /*if (code.equals("0D80") || code.equals("0C80")) {
+                a = data[offset++];
+                b = data[offset++];
+                byte c = data[offset++];
+                String param = Utils.toHexString(a)+Utils.toHexString(b)+Utils.toHexString(c);
+                count=count+3;
+            }
+            if (code.equals("0180")) {
+                a = data[offset++];
+                b = data[offset++];
+                String param = Utils.toHexString(a)+Utils.toHexString(b);
+                count=count+2;
+            }*/
         }
         byte[] read = new byte[count];
         offset = start;
@@ -635,7 +668,7 @@ public class DataReader {
         if (table.getNewDataStart() == 0) return table;
         for (PointerData p : table.getDataJap()) {
 
-            int offset = p.getOffset();
+            //int offset = p.getOffset();
 
             /*if ((offset != Integer.parseInt("385c0",16)
                     && (offset != Integer.parseInt("385c0",16)
@@ -675,7 +708,7 @@ public class DataReader {
             } else {
                 newP.setMenuData(p.getMenuData());
             }
-            newP.setOffset(offset);
+            newP.addAll(p.getOffsets());
             if (!table.getKeepOldPointerValues()) {
                 newP.setOffsetData(newDataStart);
             } else newP.setOffsetData(offsetData);
@@ -683,6 +716,9 @@ public class DataReader {
             int oldValue = p.getValue();
             if (!mapValues.containsKey(oldValue)) {
                 int value = newDataStart - newDataShift + Integer.parseInt("8000",16);
+                if (table.getNewDataStart()==Integer.parseInt("128001",16)) {
+                    value-=Integer.parseInt("8000",16);
+                }
                 if (table.getKeepOldPointerValues()) {
                     value = oldValue;
                 }
@@ -691,9 +727,14 @@ public class DataReader {
                 if (newP.getData()==null) {
                     System.out.println();
                 }
-                double l = newP.getData().length*2;
-                tableDataLength += l;
-                int longueur = (int) l;
+                int dataLength = 0;
+                for (String datum : newP.getData()) {
+                    dataLength+=datum.length()/2;
+                }
+                if (dataLength%2!=0) dataLength++;
+                //double l = newP.getData().length*2;
+                tableDataLength += dataLength;
+                int longueur = (int) dataLength;
                 newDataStart += longueur;
             } else {
                 newP.setValue(mapValues.get(oldValue));

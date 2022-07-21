@@ -9,6 +9,7 @@ public class Translation {
     private String value = "";
     private int offsetData = 0;
     private String translation = "";
+    private String japanese = "";
     private String menuData = null;
 
     public Translation() {
@@ -54,5 +55,13 @@ public class Translation {
 
     public void setMenuData(String menuData) {
         this.menuData = menuData;
+    }
+
+    public String getJapanese() {
+        return japanese;
+    }
+
+    public void setJapanese(String japanese) {
+        this.japanese = japanese;
     }
 }

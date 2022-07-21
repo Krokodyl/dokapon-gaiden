@@ -13,10 +13,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class ImageReader {
 
@@ -51,6 +49,124 @@ public class ImageReader {
         //compressedSpriteManager.decompressFile(outputFile, "src/main/resources/data/decomp-1B8000.data");
     }
 
+    public void generateSpriteMoveMenu() throws IOException {
+        generateSpriteDataFromImage(
+                "src/main/resources/sprites/move-menu.png",
+                "src/main/resources/gen/sprite-uncompressed.data",
+                new Palette2bpp("/palettes/palette-font.png"),
+                2
+        );
+        String uncomp = "src/main/resources/gen/sprite-uncompressed.data";
+        String outputFile = "src/main/resources/data/A0373.data";
+        Compressor compressor = new Compressor(uncomp);
+        compressor.compressData();
+        DataWriter.saveData(outputFile, compressor.getCompressedData());
+        //CompressedSpriteManager compressedSpriteManager = new CompressedSpriteManager(null);
+        //compressedSpriteManager.compressCopyFile(uncomp, Header.LATIN_SPRITES_HEADER, outputFile);
+        //compressedSpriteManager.decompressFile(outputFile, "src/main/resources/data/decomp-1B8000.data");
+    }
+
+    public void generateSpriteEnd() throws IOException {
+        generateSpriteDataFromImage(
+                "src/main/resources/sprites/end.png",
+                "src/main/resources/gen/sprite-uncompressed.data",
+                new Palette4bpp("/palettes/palette-end.png"),
+                4
+        );
+        String uncomp = "src/main/resources/gen/sprite-uncompressed.data";
+        String outputFile = "src/main/resources/data/9ECD4.data";
+        Compressor compressor = new Compressor(uncomp);
+        compressor.compressData();
+        DataWriter.saveData(outputFile, compressor.getCompressedData());
+    }
+
+    public void generateSpriteDuelCard() throws IOException {
+        generateSpriteDataFromImage(
+                "src/main/resources/sprites/duel-card.png",
+                "src/main/resources/gen/cf8f8-en.data",
+                new Palette4bpp("/palettes/palette-duel.png"),
+                4
+        );
+    }
+
+    public void compressSpriteDuelCard() throws IOException {
+        String uncomp = "src/main/resources/gen/cf8f8-en.data";
+        String outputFile = "src/main/resources/data/190054.data";
+        Compressor compressor = new Compressor(uncomp);
+        compressor.compressData();
+        DataWriter.saveData(outputFile, compressor.getCompressedData());
+    }
+
+    public void generateSpriteMenuSelection() throws IOException {
+        generateSpriteDataFromImage(
+                "src/main/resources/sprites/menu-selection.png",
+                "src/main/resources/gen/sprite-uncompressed.data",
+                new Palette4bpp("/palettes/palette-menu-selection.png"),
+                4
+        );
+        String uncomp = "src/main/resources/gen/sprite-uncompressed.data";
+        String outputFile = "src/main/resources/data/A8018.data";
+        Compressor compressor = new Compressor(uncomp);
+        compressor.compressData();
+        DataWriter.saveData(outputFile, compressor.getCompressedData());
+    }
+
+    public void generateSpriteCharacterNameScreen() throws IOException {
+        generateSpriteDataFromImage(
+                "src/main/resources/sprites/character-name.png",
+                "src/main/resources/gen/sprite-uncompressed.data",
+                new Palette4bpp("/palettes/palette-character-name.png"),
+                4
+        );
+        String uncomp = "src/main/resources/gen/sprite-uncompressed.data";
+        String outputFile = "src/main/resources/data/DC5A1.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+        //CompressedSpriteManager compressedSpriteManager = new CompressedSpriteManager(null);
+        //compressedSpriteManager.compressCopyFile(uncomp, Header.LATIN_SPRITES_HEADER, outputFile);
+        //compressedSpriteManager.decompressFile(outputFile, "src/main/resources/data/decomp-1B8000.data");
+    }
+
+    public void generateSpritePasswordScreen() throws IOException {
+        generateSpriteDataFromImage(
+                "src/main/resources/sprites/password.png",
+                "src/main/resources/gen/sprite-uncompressed.data",
+                new Palette4bpp("/palettes/palette-character-name.png"),
+                4
+        );
+        String uncomp = "src/main/resources/gen/sprite-uncompressed.data";
+        String outputFile = "src/main/resources/data/178020.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+        //CompressedSpriteManager compressedSpriteManager = new CompressedSpriteManager(null);
+        //compressedSpriteManager.compressCopyFile(uncomp, Header.LATIN_SPRITES_HEADER, outputFile);
+        //compressedSpriteManager.decompressFile(outputFile, "src/main/resources/data/decomp-1B8000.data");
+    }
+
+    public void generateSpritePasswordGenScreen() throws IOException {
+        generateSpriteDataFromImage(
+                "src/main/resources/sprites/password-gen.png",
+                "src/main/resources/gen/sprite-uncompressed.data",
+                new Palette4bpp("/palettes/palette-password-gen.png"),
+                4
+        );
+        String uncomp = "src/main/resources/gen/sprite-uncompressed.data";
+        String outputFile = "src/main/resources/data/d4529.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+    }
+
+    public void generatePasswordScreenTilesMap() throws IOException {
+        String uncomp = "src/main/resources/tiles-maps/password.data";
+        String outputFile = "src/main/resources/data/2BBF6.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+    }
+
     public void generateSpriteCharacterSelectScreen() throws IOException {
         generateSpriteDataFromImage(
                 "src/main/resources/sprites/character-select.png",
@@ -76,6 +192,44 @@ public class ImageReader {
         DataWriter.saveData(outputFile, compressed);
     }
 
+    public void generateCharacterSelectAuditionScreenTilesMap() throws IOException {
+        String uncomp = "src/main/resources/tiles-maps/character-select-02.data";
+        String outputFile = "src/main/resources/data/D43B5.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+    }
+    
+    public void generatePlayerOrderScreenTilesMap() throws IOException {
+        String uncomp = "src/main/resources/tiles-maps/player-order.data";
+        String outputFile = "src/main/resources/data/2B55F.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+    }
+
+    public void generateSpriteMapSelectScreen() throws IOException {
+        generateSpriteDataFromImage(
+                "src/main/resources/sprites/map-select.png",
+                "src/main/resources/gen/sprite-uncompressed.data",
+                new Palette4bpp("/palettes/palette-map-select.png"),
+                4
+        );
+        String uncomp = "src/main/resources/gen/sprite-uncompressed.data";
+        String outputFile = "src/main/resources/data/d8022.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+    }
+
+    public void generateMapScreenTilesMap() throws IOException {
+        String uncomp = "src/main/resources/tiles-maps/map-select.data";
+        String outputFile = "src/main/resources/data/D41Ed.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+    }
+
     public void generateSpriteInputScreen() throws IOException {
         generateSpriteDataFromImage(
                 "src/main/resources/sprites/input-screen.png",
@@ -96,6 +250,22 @@ public class ImageReader {
     public void generateInputScreenTilesMap() throws IOException {
         String uncomp = "src/main/resources/tiles-maps/input-screen.data";
         String outputFile = "src/main/resources/data/D3C2C.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+    }
+    
+    public void generateInputMoreScreenTilesMap() throws IOException {
+        String uncomp = "src/main/resources/tiles-maps/input-screen-more.data";
+        String outputFile = "src/main/resources/data/D3F0A.data";
+        LzCompressor compressor = new LzCompressor();
+        byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
+        DataWriter.saveData(outputFile, compressed);
+    }
+
+    public void generateTitleScreenDokaponTilesMap() throws IOException {
+        String uncomp = "src/main/resources/tiles-maps/title-screen-dokapon.data";
+        String outputFile = "src/main/resources/data/2B71E.data";
         LzCompressor compressor = new LzCompressor();
         byte[] compressed = compressor.compress(Files.readAllBytes(new File(uncomp).toPath()));
         DataWriter.saveData(outputFile, compressed);
@@ -212,6 +382,7 @@ public class ImageReader {
             if (stop) break;
         }
         if (file.toString().contains("w8")) width = 8 + 2;
+        if (file.toString().contains("w4")) width = 4 + 2;
         byte[] squelch = squelch(byteArrayOutputStream.toByteArray(), width + 2);
         //System.out.println(Utils.bytesToHex(squelch));
         return squelch;
@@ -380,6 +551,7 @@ public class ImageReader {
             if (stop) break;
         }
         if (file.toString().contains("w8")) width = 8 + 2;
+        if (file.toString().contains("w4")) width = 4 + 2;
         return width + 2;
     }
 
@@ -434,7 +606,7 @@ public class ImageReader {
     }
 
     public void writeLatin(byte[] data) {
-        int start = Integer.parseInt("58160",16);
+        int start = Integer.parseInt("58020",16);
         final int[] offset = {start};
         Path path = null;
         try {
@@ -443,7 +615,7 @@ public class ImageReader {
                     file -> {
                         if (file.toFile().isFile()) {
                             try {
-                                System.out.printf("Writing Latin char %s at %s\n",file.toFile().getName(),Integer.toHexString(offset[0]));
+                                //System.out.printf("Writing Latin char %s at %s\n",file.toFile().getName(),Integer.toHexString(offset[0]));
                                 byte[] bytes = loadFontImage2bppSquelched(file.toFile(), new Palette2bpp("/palettes/palette-font.png"), FontColor.MAP_2BPP_COLOR_02);
                                 for (byte b:bytes) {
                                     data[offset[0]++] = b;
@@ -460,7 +632,7 @@ public class ImageReader {
                     file -> {
                         if (file.toFile().isFile()) {
                             try {
-                                System.out.printf("Writing Latin char %s at %s\n",file.toFile().getName(),Integer.toHexString(offset[0]));
+                                //System.out.printf("Writing Latin char %s at %s\n",file.toFile().getName(),Integer.toHexString(offset[0]));
                                 byte[] bytes = loadFontImage2bppSquelched(file.toFile(), new Palette2bpp("/palettes/palette-font.png"), FontColor.MAP_2BPP_COLOR_02);
                                 for (byte b:bytes) {
                                     data[offset[0]++] = b;
@@ -515,9 +687,9 @@ public class ImageReader {
         } catch (IOException | URISyntaxException e) {
             
         }
-        for (Map.Entry<String, Letter> entry : letterMap.entrySet()) {
+        /*for (Map.Entry<String, Letter> entry : letterMap.entrySet()) {
             System.out.println(entry);
-        }
+        }*/
         List<Letter> syllables = new ArrayList<>();
         int width = 0;
         code = Integer.parseInt("6000",16);
@@ -585,6 +757,7 @@ public class ImageReader {
         }
         int n = 200;
         for (Letter syllable : syllables) {
+            //System.out.println(syllable);
             if (syllable.getValue().length()>1){
                 BufferedImage out = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g = (Graphics2D) out.getGraphics();
@@ -614,11 +787,11 @@ public class ImageReader {
                     e.printStackTrace();
                 }
 
-                String json = "{\n" +
+                /*String json = "{\n" +
                         "      \"value\":\"{SYL-%s}\",\n" +
                         "      \"code\":\"%s\"\n" +
                         "    },\n";
-                System.out.printf(json, syllable.getValue(), syllable.getCode());
+                System.out.printf(json, syllable.getValue(), syllable.getCode());*/
                 n++;
             }
         }
@@ -627,5 +800,227 @@ public class ImageReader {
     
     public BufferedImage getSubImage(BufferedImage image, int width) {
         return image.getSubimage(0,0,width,image.getWidth());
+    }
+    
+    public void turnImageIntoTiles(int tileX, String s, String file, String outputTiles, String outputMap) throws IOException {
+        BufferedImage image = ImageIO.read(Objects.requireNonNull(getClass().getResource(file)));
+        ByteArrayOutputStream outputMapBytes = new ByteArrayOutputStream();
+        Map<Tile, String> tiles = new HashMap<>();
+        BufferedImage out = new BufferedImage(8*16, 320, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = (Graphics2D) out.getGraphics();
+        int code = Integer.parseInt(s,16);
+        int tileY = 0;
+        for (int y=0;y<image.getHeight();y=y+8) {
+            for (int x=0;x<image.getWidth();x=x+8) {
+                BufferedImage subimage = image.getSubimage(x, y, 8, 8);
+                String folder = "D:\\git\\dokapon-gaiden\\dokapon-gaiden-gen\\src\\main\\resources\\gen\\test\\"+tileX+"-"+tileY+".png";
+                ImageIO.write(subimage, "png", new File(folder ));
+                Tile tile = new Tile(subimage);
+                String hexCode = Utils.toHexString(code, 4);
+                if (!tiles.containsKey(tile)) {
+                    /*for (Map.Entry<Tile, String> entry : tiles.entrySet()) {
+                        boolean b = compareImages(entry.getKey().image, tile.image);
+                        System.out.println(b);
+                    }*/
+
+                    tiles.put(tile, hexCode);
+                    g.drawImage(subimage,tileX,tileY, null);
+                    tileX += 8;
+                    if (tileX%(8*16)==0) {
+                        tileX=0;tileY+=8;
+                    }
+                    outputMapBytes.write(Utils.codeBytes(hexCode));
+                    code += Integer.parseInt("0100",16);
+                } else {
+                    hexCode = tiles.get(tile);
+                    outputMapBytes.write(Utils.codeBytes(hexCode));
+                }
+            }
+        }
+        try {
+            DataWriter.saveData("D:\\git\\dokapon-gaiden\\dokapon-gaiden-gen\\src\\main\\resources\\gen\\"+outputMap, outputMapBytes.toByteArray());
+            String folder = "D:\\git\\dokapon-gaiden\\dokapon-gaiden-gen\\src\\main\\resources\\gen\\"+outputTiles;
+            ImageIO.write(out, "png", new File(folder ));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    class Tile {
+        
+        BufferedImage image;
+        int[] rgbData;
+
+        public Tile(BufferedImage image) {
+            this.image = image;
+            rgbData = this.image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Tile tile = (Tile) o;
+            return Arrays.equals(rgbData, tile.rgbData);
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(rgbData);
+        }
+    }
+
+    public static boolean compareImages(BufferedImage imgA, BufferedImage imgB) {
+        // The images must be the same size.
+        if (imgA.getWidth() != imgB.getWidth() || imgA.getHeight() != imgB.getHeight()) {
+            return false;
+        }
+
+        int width  = imgA.getWidth();
+        int height = imgA.getHeight();
+
+        // Loop over every pixel.
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                // Compare the pixels for equality.
+                if (imgA.getRGB(x, y) != imgB.getRGB(x, y)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+    
+    public static void generateLatinMenus() {
+        Map<String, String> letters = new HashMap<>();
+        letters.put(" ", "00 00");
+        int index = 1;
+        for (char c='0';c<='9';c++) {
+            letters.put(""+c, Utils.toHexString(index++)+" 00");
+        }
+        letters.put("A", Utils.toHexString(index++)+" 00");
+        letters.put("B", Utils.toHexString(index++)+" 00");
+        letters.put("C", Utils.toHexString(index++)+" 00");
+        letters.put("D", Utils.toHexString(index++)+" 00");
+        letters.put("E", Utils.toHexString(index++)+" 00");
+        index = 16;
+        for (char c='F';c<='U';c++) {
+            letters.put(""+c, Utils.toHexString(index++)+" 00");
+        }
+        letters.put("V", Utils.toHexString(index++)+" 00");
+        letters.put("W", Utils.toHexString(index++)+" 00");
+        letters.put("X", Utils.toHexString(index++)+" 00");
+        letters.put("Y", Utils.toHexString(index++)+" 00");
+        letters.put("Z", Utils.toHexString(index++)+" 00");
+        
+        
+        String[] menus = {
+                "SWITCHA CARD",
+                "NO    SWITCH",
+                "REMOVEITEM  ",
+                "GET   READY ",
+                "SELECTTARGET",
+                "SELECTACTION"
+                
+        };
+        for (String menu:menus) {
+            String[] lines = menu.split("(?<=\\G.{6})");
+            System.out.printf("Menu text : %s ", menu);
+            String line = "";
+            for (char c:lines[0].toCharArray()) {
+                line+=letters.get(""+c)+" ";
+            }
+            System.out.printf("0C 00 %s FF FF ", line.trim());
+            line = "";
+            for (char c:lines[1].toCharArray()) {
+                line+=letters.get(""+c)+" ";
+            }
+            System.out.printf("0C 00 %s FF FF\n", line.trim());
+        }
+        
+        Map<String, String> values = new HashMap<>();
+        values.put("fire","E0 01 E1 01 00 00 ");
+        values.put("ice","E2 01 E3 01 00 00 ");
+        values.put("hit","E4 01 E5 01 00 00 ");
+        values.put("shield", "E6 01 E7 01 E8 01 ");
+        values.put("jewel", "F0 01 F1 01 F2 01 ");
+        values.put("sword", "F3 01 F4 01 F5 01 ");
+        values.put("armor", "F6 01 F7 01 F8 01 ");
+        values.put("lvl-top", "E9 01 EA 01 ");
+        values.put("lvl-bot", "F9 01 FA 01 ");
+        values.put("1-top", "87 01 ");
+        values.put("2-top", "88 01 ");
+        values.put("3-top", "89 01 ");
+        values.put("4-top", "8A 01 ");
+        values.put("5-top", "8B 01 ");
+        values.put("6-top", "8C 01 ");
+        values.put("7-top", "8D 01 ");
+        values.put("8-top", "8E 01 ");
+        values.put("9-top", "8F 01 ");
+        values.put("1-bot", "97 01 ");
+        values.put("2-bot", "98 01 ");
+        values.put("3-bot", "99 01 ");
+        values.put("4-bot", "9A 01 ");
+        values.put("5-bot", "9B 01 ");
+        values.put("6-bot", "9C 01 ");
+        values.put("7-bot", "9D 01 ");
+        values.put("8-bot", "9E 01 ");
+        values.put("9-bot", "9F 01 ");
+        String[] types = {"hit", "fire", "ice"};
+        String[] gear = {"jewel", "sword", "shield", "armor"};
+        String all = "";
+        for (String type:types) {
+            for (int level=1;level<10;level++) {
+                for (String g:gear) {
+                    String top = "0C 00 " + values.get(type) + values.get("lvl-top") + values.get(level+"-top") + "FF FF ";
+                    String bot = "0C 00 " + values.get(g) + values.get("lvl-bot") + values.get(level+"-bot") + "FF FF ";
+                    /*System.out.println(type +" "+ g + " "+level);
+                    System.out.println(top);
+                    System.out.println(bot);*/
+                    all+=top;
+                    all+=bot;
+                }
+            }
+        }
+        //System.out.println("13C82");
+        //System.out.println(all);
+    }
+    
+    public static void extractMenus(byte[] data, int start, int end) throws IOException {
+        BufferedImage sprites = ImageIO.read(Objects.requireNonNull(ImageReader.class.getResource("/sprites/move-menu.png")));
+        int offset = start;
+        while (offset<end) {
+            if (data[offset]==Integer.parseInt("0C", 16) && data[offset+16]==Integer.parseInt("0C", 16)) {
+                //System.out.println("extractMenus "+Integer.toHexString(offset));
+                byte[] bytes = Arrays.copyOfRange(data, offset, offset + Integer.parseInt("20", 16));
+                if (bytes[0]==Integer.parseInt("0C", 16) && bytes[16]==Integer.parseInt("0C", 16)) {
+                    BufferedImage image = new BufferedImage(6*8, 16, BufferedImage.TYPE_INT_ARGB);
+                    Graphics2D g = (Graphics2D) image.getGraphics();
+                    g.setColor(Color.BLACK);
+                    g.fillRect(0,0,image.getWidth(),image.getHeight());
+                    for (int tileY=0;tileY<2;tileY++) {
+                        for (int tileX=0;tileX<6;tileX++) {
+                            byte a = (byte) (bytes[2+(tileY*16)+tileX*2] & 0xFF);
+                            byte b = (byte) (bytes[2+1+(tileY*16)+tileX*2] & 0xFF);
+                            BufferedImage subImage = menuSubImage(sprites, a, b);
+                            g.drawImage(subImage,tileX*8,tileY*8, null);
+                        }
+                    }
+                    String folder = "D:\\git\\dokapon-gaiden\\dokapon-gaiden-gen\\src\\main\\resources\\images\\menus";
+                    ImageIO.write(image, "png", new File(folder + "/" + offset +" - "+Integer.toHexString(offset) + ".png"));
+                    
+                }
+                offset+=32;
+            } else {
+                offset++;
+            }
+        }
+    }
+    
+    public static BufferedImage menuSubImage(BufferedImage sprites, byte a, byte b) {
+        int y = 0x80*(b & 0xFF) + 8*((a & 0xFF)/0x10);
+        int x = 8*(0x0F & (a & 0xFF));
+        return sprites.getSubimage(x, y, 8, 8);
     }
 }

@@ -23,7 +23,7 @@ public class TablePrinter {
         PrintWriter writer = new PrintWriter(output, "UTF-8");
         for (PointerData p : table.getDataJap()) {
 
-            int offset = p.getOffset();
+            //int offset = p.getOffset();
             int value = p.getValue();
             int offsetData = p.getOffsetData();
             byte[] bytes = hexStringToByteArray(p.getData());
@@ -31,8 +31,9 @@ public class TablePrinter {
             String jpn = getJapaneseFromBytes(bytes, japanese);
             String eng = "";
 
-
-            writer.println(TRANSLATION_KEY_OFFSET+"="+toHexString(offset, 6));
+            for (Integer offset : p.getOffsets()) {
+                writer.println(TRANSLATION_KEY_OFFSET+"="+toHexString(offset, 6));
+            }
             writer.println(TRANSLATION_KEY_VALUE+"="+toHexString(value, 4));
             writer.println(TRANSLATION_KEY_OFFSETDATA+"="+toHexString(offsetData, 6));
 
@@ -105,7 +106,7 @@ public class TablePrinter {
                 String[] split = line.split(Constants.TRANSLATION_KEY_VALUE_SEPARATOR);
                 if (split.length>0) {
                     if (split[0].equals(Constants.TRANSLATION_KEY_OFFSET)) {
-                        p.setOffset(Integer.parseInt(split[1], 16));
+                        p.addOffset(Integer.parseInt(split[1], 16));
                     }
                     if (split[0].equals(Constants.TRANSLATION_KEY_OFFSETDATA)) {
                         p.setOffsetData(Integer.parseInt(split[1], 16));
@@ -194,14 +195,40 @@ public class TablePrinter {
 
     public String getJapaneseFromBytes(byte[] data, Dictionnary japanese) {
         String res = "";
-        for (int k=0;k<data.length;k=k+2) {
+        int k=0;
+        while (k<data.length)  {
             String code = "";
-            byte a = data[k];
-            byte b = data[k+1];
+            byte a = data[k++];
+            byte b = data[k++];
             code += Utils.toHexString(a)+Utils.toHexString(b);
-            String s = japanese.getJapanese(code);
-            if (s==null) s="{"+code+"}";
-            res += s;
+            if (specialCodes.containsKey(code)) {
+                int paramCount = specialCodes.get(code);
+                String param = "";
+                while (paramCount>0) {
+                    b = data[k++];
+                    param += Utils.toHexString(b);
+                    paramCount--;
+                }
+                res += "{"+code+"}"+"{"+param+"}";
+            }
+            /*if (code.equals("0D80")) {
+                a = data[k++];
+                b = data[k++];
+                byte c = data[k++];
+                String param = Utils.toHexString(a)+Utils.toHexString(b)+Utils.toHexString(c);
+                res += "{"+code+"}"+"{"+param+"}";
+            } else if (code.equals("0180")) {
+                a = data[k++];
+                b = data[k++];
+                String param = Utils.toHexString(a)+Utils.toHexString(b);
+                res += "{"+code+"}"+"{"+param+"}";
+            }*/
+            else {
+                String s = japanese.getJapanese(code);
+                if (s==null) s="{"+code+"}";
+                res += s;
+            }
+            
         }
         return res;
     }

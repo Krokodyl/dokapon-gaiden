@@ -3,6 +3,7 @@ package services;
 import characters.JapaneseChar;
 import characters.LatinChar;
 import characters.SpecialChar;
+import entities.Dictionnary;
 import entities.PointerData;
 import entities.PointerTable;
 import entities.Translation;
@@ -14,8 +15,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import static services.Constants.LENGTH_DIALOG_LINE;
-import static services.Constants.MODE_F0_BYTE;
+import static services.Constants.*;
+import static services.Constants.specialCodes;
 
 public class Translator {
 
@@ -26,7 +27,7 @@ public class Translator {
 
     private LatinLoader latinLoader;
 
-    boolean replaceMissingTranslationWithValue = false;
+    boolean replaceMissingTranslationWithValue = true;
     
     int missingTranslations = 0;
 
@@ -72,7 +73,10 @@ public class Translator {
                         }
                     }
                     if (split[0].equals(Constants.TRANSLATION_KEY_JPN)) {
-                        jpn = split[1];
+                        if (split.length>1) {
+                            t.setJapanese(split[1]);
+                            jpn = split[1];
+                        }
                     }
                 }
             } else {
@@ -82,7 +86,7 @@ public class Translator {
                 }
                 else {
                     missingTranslations++;
-                    //System.out.println("MISSING TRANSLATIONS : "+Integer.toHexString(t.getOffset())+"  "+jpn);
+                    System.out.println("MISSING TRANSLATIONS : "+Integer.toHexString(t.getOffset())+"  "+jpn);
                 }
                 t = new Translation();
             }
@@ -117,12 +121,14 @@ public class Translator {
     }
 
     public String[] getTranslation(PointerData p, boolean evenLength, boolean prefixF0) {
+        String jpn = "";
         for (Translation t : translations) {
             String translation = t.getTranslation();
             if (t.getOffsetData() == p.getOffsetData() && translation != null && !translation.isEmpty()) {
                 for (Map.Entry<String, String> e : references.entrySet()) {
                     translation = translation.replaceAll(e.getKey(), e.getValue());
                 }
+                jpn = t.getJapanese();
                 String eng = getCodesFromEnglish(translation);
                 if (prefixF0) eng = Utils.toHexString(MODE_F0_BYTE) + " " + eng;
                 return eng.split(" ");
@@ -137,12 +143,76 @@ public class Translator {
          */
         if (replaceMissingTranslationWithValue) {
             missingTranslations++;
-            String translation = Integer.toHexString(p.getValue()).toUpperCase();
-            translation += "{0A80}{EL}";
+            String[] data = p.getData();
+            String prefix = "";
+            if (data[0].equals("03") && data[1].equals("80")) {
+                String code = data[0]+data[1]+data[2]+data[3];
+                if (!missingSpecialCodes.contains(code)) {
+                    missingSpecialCodes.add(code);
+                    System.out.println("SPECIAL CODE "+code);
+                }
+                switch (code) {
+                    case "0380F694":{
+                        prefix = "{0780}{0C80}{050301}{0180}{0A00}";
+                    }break;
+                    case "0380AAA8":{
+                        prefix = "{0780}{0D80}{070506}{0180}{1400}";
+                    }break;
+                    case "0380B7A8":{
+                        prefix = "{0780}{0C80}{070301}{0180}{0A00}";
+                    }break;
+                    case "038079FF":{
+                        prefix = "{0D80}{070504}{0180}{1400}";
+                    }break;
+                    case "03805FFF":{
+                        prefix = "{0780}{0D80}{070506}{0180}{1400}";
+                    }break;
+                    case "038024C5":{
+                        prefix = ".....";
+                    }break;
+                }
+            }
+            jpn = getJapaneseWithoutSpecial(Utils.hexStringToByteArray(p.getData()));
+            if (jpn.equals("{EL}")) {
+                System.out.println("Keep original data for "+Utils.toHexString(p.getValue(),4).toUpperCase());
+                return null;
+            }
+            String translation = Utils.toHexString(p.getValue(),4).toUpperCase();
+            translation = prefix + translation + "{0180}{C000}{0780}{0A80}{EL}";
             String eng = getCodesFromEnglish(translation);
             return eng.split(" ");
         } else return null;
     }
+
+    public String getJapaneseWithoutSpecial(byte[] data) {
+        List<JapaneseChar> japaneseChars = JsonLoader.loadJapanese();
+        Dictionnary japanese = new Dictionnary(japaneseChars);
+        String res = "";
+        int k=0;
+        while (k<data.length)  {
+            String code = "";
+            byte a = data[k++];
+            byte b = data[k++];
+            code += Utils.toHexString(a)+Utils.toHexString(b);
+            if (specialCodes.containsKey(code)) {
+                int paramCount = specialCodes.get(code);
+                String param = "";
+                while (paramCount>0) {
+                    b = data[k++];
+                    param += Utils.toHexString(b);
+                    paramCount--;
+                }
+                //res += "{"+code+"}"+"{"+param+"}";
+            }
+            else {
+                String s = japanese.getJapanese(code);
+                if (s!=null) res += s;
+            }
+        }
+        return res;
+    }
+    
+    public static List<String> missingSpecialCodes = new ArrayList<>();
 
     public String getEnglish(PointerData p) {
         for (Translation t : translations) {
@@ -157,7 +227,7 @@ public class Translator {
 
     public String[] getMenuData(PointerData p) {
         for (Translation t : translations) {
-            if (t.getOffset() == p.getOffset() && t.getTranslation() != null && !t.getTranslation().isEmpty()) {
+            if (t.getOffsetData() == p.getOffsetData() && t.getTranslation() != null && !t.getTranslation().isEmpty()) {
                 String menuData = t.getMenuData();
                 if (menuData == null) {
                     return null;

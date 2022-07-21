@@ -1,11 +1,13 @@
 package lz;
 
 import services.DokaponGaiden;
+import services.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -85,6 +87,8 @@ public class LzDecompressor {
         System.out.printf("Decompressed from %s to %s\n", Integer.toHexString(offset), Integer.toHexString(offset+ compressedDataSize));
         System.out.printf("Compressed size : %s (%s)\n",compressedDataSize, Integer.toHexString(compressedDataSize));
         System.out.printf("Decompressed size : %s (%s)\n", decompressedDataSize, Integer.toHexString(decompressedDataSize));
+        System.out.println("Decompressed data : "+ Utils.bytesToHex(getDecompressedData()));
+        
     }
 
     public int getShift(byte left, byte right) {

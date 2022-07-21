@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -42,6 +43,7 @@ public class DataWriter {
         System.out.println("Write Patches (debug="+debug+")");
         for (CodePatch cp:patchList) {
             if (cp.isDebug()==debug)
+                //if (cp.getCode().length()!=5)
                 cp.writePatch(data);
         }
         return data;
@@ -96,7 +98,7 @@ public class DataWriter {
         System.out.println("Write English for table "+table.getId());
         for (PointerData p : table.getDataEng()) {
 
-            int offset = p.getOffset();
+            //int offset = p.getOffset();
             
             /*if ((offset != Integer.parseInt("385c0",16)
             && (offset != Integer.parseInt("385c0",16)
@@ -111,21 +113,32 @@ public class DataWriter {
 
             if (menuData==null) {
                 if (!table.getKeepOldPointerValues()) {
-                    data[offset] = (byte) (value % 256);
-                    data[offset + 1] = (byte) (value / 256);
+                    for (Integer offset : p.getOffsets()) {
+                        data[offset] = (byte) (value % 256);
+                        data[offset + 1] = (byte) (value / 256);
+                    }
                 }
                 for (String s : p.getData()) {
-                    int a = Integer.parseInt(s.substring(0, 2), 16);
+                    String[] bytes = s.split("(?<=\\G..)");
+                    for (String b:bytes) {
+                        int a = Integer.parseInt(b, 16);
+                        data[offsetData++] = (byte) a;
+                    }
+                    /*int a = Integer.parseInt(s.substring(0, 2), 16);
                     int b = Integer.parseInt(s.substring(2, 4), 16);
                     data[offsetData++] = (byte) a;
-                    data[offsetData++] = (byte) b;
+                    data[offsetData++] = (byte) b;*/
                 }
             } else {
 
                 //System.out.println();
                 //if (offset == Integer.parseInt("207f1",16)) {
-                data[offset] = (byte) (value % 256);
-                data[offset + 1] = (byte) (value / 256);
+
+                for (Integer offset : p.getOffsets()) {
+                    data[offset] = (byte) (value % 256);
+                    data[offset + 1] = (byte) (value / 256);
+                }
+                
                 //}
                 for (String s : p.getData()) {
                     int a = Integer.parseInt(s.substring(0, 2), 16);
@@ -169,6 +182,7 @@ public class DataWriter {
             int shift = table.getShift();
             int length = table.getLength();
             for (String name:table.getNames()) {
+                //System.out.printf("%s : %s\n", Integer.toHexString(offset), name);
                 int count = 0;
                 for (Letter letter : syllables.get(name)) {
                     byte[] codeBytes = letter.getCodeBytes();

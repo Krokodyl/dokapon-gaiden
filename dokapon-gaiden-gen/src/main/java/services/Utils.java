@@ -58,4 +58,13 @@ public class Utils {
         }
         return res.trim().split(" ");
     }
+
+    public static byte[] codeBytes(String code) {
+        byte[] data = new byte[2];
+        int a = Integer.parseInt(code.substring(0, 2), 16);
+        int b = Integer.parseInt(code.substring(2, 4), 16);
+        data[0] = (byte) a;
+        data[1] = (byte) b;
+        return data;
+    }
 }
