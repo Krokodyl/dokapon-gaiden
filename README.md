@@ -18,6 +18,23 @@ No-Intro: Super Nintendo Entertainment System (v. 20210222-050638)<br/>
 File/ROM SHA-1: 8A3C4A376A93555454421B6B660FE8EF9190B270<br/>
 File/ROM CRC32: A1684B6C<br/>
 
+# Screenshots
+
+Japanese | English
+------------ | -------------
+![image 01](screenshots/japanese/01.png) | ![image 01](screenshots/english/01.png)
+![image 01](screenshots/japanese/02.png) | ![image 01](screenshots/english/02.png)
+![image 01](screenshots/japanese/03.png) | ![image 01](screenshots/english/03.png)
+![image 01](screenshots/japanese/04.png) | ![image 01](screenshots/english/04.png)
+![image 01](screenshots/japanese/05.png) | ![image 01](screenshots/english/05.png)
+![image 01](screenshots/japanese/06.png) | ![image 01](screenshots/english/06.png)
+![image 01](screenshots/japanese/07.png) | ![image 01](screenshots/english/07.png)
+![image 01](screenshots/japanese/08.png) | ![image 01](screenshots/english/08.png)
+![image 01](screenshots/japanese/09.png) | ![image 01](screenshots/english/09.png)
+![image 01](screenshots/japanese/10.png) | ![image 01](screenshots/english/10.png)
+![image 01](screenshots/japanese/11.png) | ![image 01](screenshots/english/11.png)
+
+
 ## Translations
 
 ### Main Menu
