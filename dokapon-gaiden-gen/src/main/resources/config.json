@@ -749,6 +749,24 @@
       "feature": "CHARACTER SELECT"
     },
     {
+      "code": "48 21 49 21 4A 21 4B 21 4C 21 4D 21 C6 20 00 20 00 20 00 20 00 20 00 20 58 21 59 21 5A 21 5B 21 5C 21 5D 21 D6 20 00 20 00 20 00 20 00 20 00 20",
+      "offset": "23D18",
+      "desc": "Joypad-3",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "48 21 49 21 4A 21 4B 21 4C 21 4D 21 C7 20 00 20 00 20 00 20 00 20 00 20 58 21 59 21 5A 21 5B 21 5C 21 5D 21 D7 20 00 20 00 20 00 20 00 20 00 20",
+      "offset": "23D48",
+      "desc": "Joypad-4",
+      "feature": "CHARACTER SELECT"
+    },
+    {
+      "code": "48 21 49 21 4A 21 4B 21 4C 21 4D 21 C8 20 00 20 00 20 00 20 00 20 00 20 58 21 59 21 5A 21 5B 21 5C 21 5D 21 D8 20 00 20 00 20 00 20 00 20 00 20",
+      "offset": "23D78",
+      "desc": "Joypad-5",
+      "feature": "CHARACTER SELECT"
+    },
+    {
       "code": "40 20 41 20 22 21 23 21 24 21 25 21 26 21 00 20 00 20 00 20 00 20 00 20 50 20 51 20 32 21 33 21 34 21 35 21 36 21 00 20 00 20 00 20 00 20 00 20",
       "offset": "23DA8",
       "desc": "Computer",
@@ -813,6 +831,24 @@
       "code": "ca 20 cb 20 cc 20 cd 20 cf 20 da 20 db 20 dc 20 dd 20 df 20",
       "offset": "23C34",
       "desc": "Joypad 2",
+      "feature": "PLAY ORDER"
+    },
+    {
+      "code": "ca 20 cb 20 cc 20 cd 20 c6 20 da 20 db 20 dc 20 dd 20 d6 20",
+      "offset": "23c48",
+      "desc": "Joypad 3",
+      "feature": "PLAY ORDER"
+    },
+    {
+      "code": "ca 20 cb 20 cc 20 cd 20 c7 20 da 20 db 20 dc 20 dd 20 d7 20",
+      "offset": "23c5c",
+      "desc": "Joypad 4",
+      "feature": "PLAY ORDER"
+    },
+    {
+      "code": "ca 20 cb 20 cc 20 cd 20 c8 20 da 20 db 20 dc 20 dd 20 d8 20",
+      "offset": "23c70",
+      "desc": "Joypad 5",
       "feature": "PLAY ORDER"
     },
     {
