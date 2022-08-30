@@ -13,9 +13,10 @@ The 3rd game in the Dokapon series.
 4 players (Human or CPUs) take turns going around a board. The goal is to have the most gold at the end.<br/>You get gold from different sources: random events, fighting monsters, fighting other players (you take half of the gold of defeated opponents) or simply completing a lap around the board.<br/>
 While keeping gold is important as it is your final score, it can be used during the game to upgrade your gear and your stats to help you fight better.<br/>
 
-## Patch file
+## Patch File
 
-Patch file v1.0 is available here : [Dokapon Gaiden - Honoo no Audition (English).zip](/patch/Dokapon%20Gaiden%20-%20Honoo%20no%20Audition%20(English).zip)
+BPS Patch File v1.0 is available here : [Dokapon Gaiden - Honoo no Audition (English).zip](/patch/Dokapon%20Gaiden%20-%20Honoo%20no%20Audition%20(English)%201.0.zip)
+Coming to romhacking.net soon!
 
 It applies to the following ROM :<br/>
 File: Dokapon Gaiden - Honoo no Audition (Japan)<br/>
