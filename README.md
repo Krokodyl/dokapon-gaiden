@@ -15,8 +15,8 @@ While keeping gold is important as it is your final score, it can be used during
 
 ## Patch File
 
-BPS Patch File v1.0 is available here : [Dokapon Gaiden - Honoo no Audition (English).zip](/patch/Dokapon%20Gaiden%20-%20Honoo%20no%20Audition%20(English)%201.0.zip)
-Coming to romhacking.net soon!
+BPS Patch File v1.0 is available here : [Dokapon Gaiden - Honoo no Audition (English).zip](/patch/Dokapon%20Gaiden%20-%20Honoo%20no%20Audition%20(English)%201.0.zip)<br/>
+Also available on romhacking.net : [https://www.romhacking.net/translations/6648/](https://www.romhacking.net/translations/6648/)
 
 It applies to the following ROM :<br/>
 File: Dokapon Gaiden - Honoo no Audition (Japan)<br/>
