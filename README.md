@@ -24,6 +24,10 @@ No-Intro: Super Nintendo Entertainment System (v. 20210222-050638)<br/>
 File/ROM SHA-1: 8A3C4A376A93555454421B6B660FE8EF9190B270<br/>
 File/ROM CRC32: A1684B6C<br/>
 
+## Disclaimer
+
+<img src="https://raw.githubusercontent.com/Krokodyl/Krokodyl/main/warning.png" />
+
 # Screenshots
 
 Japanese | English
